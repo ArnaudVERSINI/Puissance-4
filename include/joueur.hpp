@@ -17,6 +17,7 @@ public:
     virtual const string getJoueurInformations()=0;
 };
 
+
 template<TJoueur joueur>
 class JoueurHumain : public Joueur<joueur> {
     string nom;

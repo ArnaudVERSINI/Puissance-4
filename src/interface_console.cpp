@@ -1,4 +1,5 @@
 #include "jeu_puissance_4.hpp"
+#include "joueur.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -16,7 +17,7 @@ class InterfaceConsole {
 
 public :
 
-    inline void printCase(Case case_) {
+    inline void printCase(TCase case_) {
         switch(case_) {
             case BLUE:
             cout << Console::BLUE;
@@ -34,9 +35,9 @@ public :
 
     inline void print() {
         cout << Console::CLEAR;
-        for(int ligne = JeuxPuissanceQuatre::HAUTEUR - 1; ligne >= 0; ligne--) {
+        for(int ligne = Plateau::HAUTEUR - 1; ligne >= 0; ligne--) {
                 cout << "\t";
-            for(size_t colonne = 0; colonne < JeuxPuissanceQuatre::LARGEUR; colonne++) {
+            for(size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
                 printCase(jeux.getCasePlateau(ligne, colonne));
             }
             cout << Console::RESET;
@@ -58,5 +59,8 @@ public :
 
 int main()
 {
-    InterfaceConsole console;
+    JoueurHumain<JOUEUR_BLEU> joueur("toto");
+    cout << joueur.getJoueurInformations();
+
+    //InterfaceConsole console;
 }

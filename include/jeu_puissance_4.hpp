@@ -1,43 +1,37 @@
 #ifndef JEU_PUISSANCE_4_HPP_INCLUDED
 #define JEU_PUISSANCE_4_HPP_INCLUDED
 #include <iostream>
+#include "plateau.hpp"
 
 using namespace std;
 
-enum Case {
-    BLUE = 0,
-    RED = 1,
-    NONE = 2
-};
 
-enum Joueur {
+
+enum TJoueur {
     JOUEUR_BLEU = 0,
     JOUEUR_ROUGE = 1,
     JOUEUR_NUL = 2
 };
 
 class JeuxPuissanceQuatre {
-    public:
-    static const size_t LARGEUR = 6;
-    static const size_t HAUTEUR = 7;
-    private:
-    /**
-     * Le plateau de jeux
-     */
-    Case plateau[HAUTEUR][LARGEUR];
 
-    Joueur joueurActuel;
+    private:
+
+    TJoueur joueurActuel;
+    Plateau plateau;
 
     bool partieFinie;
 
-    Joueur gagnant;
+    TJoueur gagnant;
 
 
     inline void switchCurrentPlayer () {
         joueurActuel = joueurActuel == JOUEUR_BLEU ? JOUEUR_ROUGE : JOUEUR_BLEU;
     }
 
-    static inline const string caseToString(Case case_) {
+    public :
+
+    static inline const string caseToString(TCase case_) {
         const char* chaine = NULL;
         switch (case_) {
          case BLUE:
@@ -53,7 +47,7 @@ class JeuxPuissanceQuatre {
         return chaine;
     }
 
-    static inline const string playerToString(Joueur joueur) {
+    static inline const string playerToString(TJoueur joueur) {
         const char* chaine = NULL;
         switch (joueur) {
          case JOUEUR_BLEU:
@@ -69,15 +63,8 @@ class JeuxPuissanceQuatre {
         return chaine;
     }
 
-    public :
-
     inline JeuxPuissanceQuatre() {
         partieFinie = false;
-        for (size_t i = 0; i < LARGEUR; i++) {
-            for (size_t j = 0; j < HAUTEUR; j++) {
-                plateau [j][i] = NONE;
-            }
-        }
         joueurActuel = JOUEUR_BLEU;
         gagnant = JOUEUR_NUL;
     }
@@ -85,9 +72,9 @@ class JeuxPuissanceQuatre {
     inline void aGagner(size_t ligne, size_t colonne) {
         size_t nb_pions = 0;
 
-        if (ligne == HAUTEUR - 1) {
-            for (size_t colonne_actuelle = 0; colonne_actuelle < LARGEUR && !partieFinie; colonne_actuelle++) {
-                if ( plateau[HAUTEUR - 1][colonne_actuelle] == NONE) {
+        if (ligne == Plateau::HAUTEUR - 1) {
+            for (size_t colonne_actuelle = 0; colonne_actuelle < Plateau::LARGEUR && !partieFinie; colonne_actuelle++) {
+                if ( plateau.get(Plateau::HAUTEUR - 1, colonne_actuelle) == NONE) {
                     partieFinie = true;
                 }
             }
@@ -96,13 +83,13 @@ class JeuxPuissanceQuatre {
         //Axe horizontal
         for (
             int colonne_actuelle = colonne - 1;
-            colonne_actuelle >= 0 && plateau[ligne][colonne_actuelle] == (Case) joueurActuel;
+            colonne_actuelle >= 0 && plateau.get(ligne, colonne_actuelle) == (TCase) joueurActuel;
             colonne_actuelle--) {
             nb_pions++;
         }
         for (
             size_t colonne_actuelle = colonne + 1;
-            colonne_actuelle < LARGEUR && plateau[ligne][colonne_actuelle] == (Case) joueurActuel;
+            colonne_actuelle < Plateau::LARGEUR && plateau.get(ligne, colonne_actuelle) == (TCase) joueurActuel;
             colonne_actuelle++) {
             nb_pions++;
         }
@@ -117,14 +104,14 @@ class JeuxPuissanceQuatre {
         //Axe vertical
         for (
             int ligne_actuelle = ligne - 1;
-            ligne_actuelle >= 0 && plateau[ligne_actuelle][colonne] == (Case) joueurActuel;
+            ligne_actuelle >= 0 && plateau.get(ligne_actuelle, colonne) == (TCase) joueurActuel;
             ligne_actuelle--) {
             nb_pions++;
         }
 
         for (
             size_t ligne_actuelle = ligne + 1;
-            ligne_actuelle < HAUTEUR && plateau[ligne_actuelle][colonne] == (Case) joueurActuel;
+            ligne_actuelle < Plateau::HAUTEUR && plateau.get(ligne_actuelle, colonne) == (TCase) joueurActuel;
             ligne_actuelle++) {
             nb_pions++;
         }
@@ -140,14 +127,14 @@ class JeuxPuissanceQuatre {
 
         for (
             int ligne_actuelle = ligne - 1, colonne_actuelle = colonne - 1;
-            ligne_actuelle >= 0 && colonne_actuelle >= 0 && plateau[ligne_actuelle][colonne] == (Case) joueurActuel;
+            ligne_actuelle >= 0 && colonne_actuelle >= 0 && plateau.get(ligne_actuelle, colonne) == (TCase) joueurActuel;
             ligne_actuelle--, colonne_actuelle--) {
             nb_pions++;
         }
 
         for (
             size_t ligne_actuelle = ligne + 1, colonne_actuelle = colonne + 1;
-            ligne_actuelle < HAUTEUR && colonne_actuelle < LARGEUR && plateau[ligne_actuelle][colonne] == (Case) joueurActuel;
+            ligne_actuelle < Plateau::HAUTEUR && colonne_actuelle < Plateau::LARGEUR && plateau.get(ligne_actuelle, colonne)== (TCase) joueurActuel;
             ligne_actuelle++, colonne_actuelle++) {
             nb_pions++;
         }
@@ -165,14 +152,14 @@ class JeuxPuissanceQuatre {
             return false;
         }
 
-        if (colonne >= LARGEUR) {
+        if (colonne >= Plateau::LARGEUR) {
             return false;
         }
 
         bool aJoue = false;
-        for (size_t ligne = 0; ligne < HAUTEUR && !aJoue; ligne ++) {
-            if (plateau[ligne][colonne] == NONE) {
-                plateau[ligne][colonne] = (Case) joueurActuel;
+        for (size_t ligne = 0; ligne < Plateau::HAUTEUR && !aJoue; ligne ++) {
+            if (plateau.get(ligne,colonne) == NONE) {
+                plateau.set(ligne, colonne, (TCase) joueurActuel);
                 aGagner(ligne, colonne);
                 switchCurrentPlayer();
                 aJoue = true;
@@ -181,7 +168,7 @@ class JeuxPuissanceQuatre {
         return aJoue;
     }
 
-    inline Joueur getJoueurActuel() const {
+    inline TJoueur getJoueurActuel() const {
         return joueurActuel;
     }
 
@@ -193,12 +180,8 @@ class JeuxPuissanceQuatre {
         return partieFinie;
     }
 
-    inline Case getCasePlateau(size_t ligne, size_t colonne) {
-        Case retValue = NONE;
-        if ((ligne < LARGEUR) & (colonne < HAUTEUR)) {
-            retValue = plateau[ligne][colonne];
-        }
-        return retValue;
+    inline TCase getCasePlateau(size_t ligne, size_t colonne) const {
+        return plateau.get(ligne, colonne);
     }
 
     inline const string getJoueurActuelGagnantStr() const {
@@ -208,15 +191,15 @@ class JeuxPuissanceQuatre {
     inline const string toString() const {
         string retValue;
 
-        for(int ligne_actuelle = HAUTEUR - 1; ligne_actuelle >= 0; ligne_actuelle--) {
-            for(size_t i = 0; i < (LARGEUR * 2) + 1; i++) {
+        for(int ligne_actuelle = Plateau::HAUTEUR - 1; ligne_actuelle >= 0; ligne_actuelle--) {
+            for(size_t i = 0; i < (Plateau::LARGEUR * 2) + 1; i++) {
                 retValue += "-";
             }
             retValue += "\n";
 
-            for(size_t colonne_actuelle = 0; colonne_actuelle <  LARGEUR; colonne_actuelle++) {
+            for(size_t colonne_actuelle = 0; colonne_actuelle <  Plateau::LARGEUR; colonne_actuelle++) {
                 retValue += "|";
-                retValue += caseToString(plateau[ligne_actuelle][colonne_actuelle]);
+                retValue += caseToString(plateau.get(ligne_actuelle, colonne_actuelle));
             }
             retValue += "|\n";
         }
