@@ -15,6 +15,10 @@ class InterfaceConsole {
 
     JeuxPuissanceQuatre jeux;
 
+    Joueur<JOUEUR_BLEU>& joueurBleu;
+
+    Joueur<JOUEUR_ROUGE>& joueurRouge;
+
 public :
 
     inline void printCase(TCase case_) {
@@ -45,7 +49,9 @@ public :
         }
     }
 
-    inline InterfaceConsole() {
+    inline InterfaceConsole(Joueur<JOUEUR_BLEU>& joueurBleu_, Joueur<JOUEUR_ROUGE>& joueurRouge_) :
+            joueurBleu(joueurBleu_),
+            joueurRouge(joueurRouge_) {
         jeux.jouer(2);
         print();
     }
