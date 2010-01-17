@@ -1,0 +1,8 @@
+#Compilation pour systeme Unix sans IDE
+cmake . -G"Unix Makefiles"
+
+# Compilation pour CodeBlocks et Unix
+cmake . -G"CodeBlocks - Unix Makefiles"
+
+# Eclipse CDT 4
+cmake . -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_EDIT_COMMAND:STRING=/usr/bin/cmake
