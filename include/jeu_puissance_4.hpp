@@ -144,7 +144,6 @@ class JeuxPuissanceQuatre {
             partieFinie = true;
             return;
         }
-
     }
 
     inline bool jouer(size_t colonne) {
@@ -155,17 +154,11 @@ class JeuxPuissanceQuatre {
         if (colonne >= Plateau::LARGEUR) {
             return false;
         }
-
-        bool aJoue = false;
-        for (size_t ligne = 0; ligne < Plateau::HAUTEUR && !aJoue; ligne ++) {
-            if (plateau.get(ligne,colonne) == NONE) {
-                plateau.set(ligne, colonne, (TCase) joueurActuel);
-                aGagner(ligne, colonne);
-                switchCurrentPlayer();
-                aJoue = true;
-            }
+        int ligne = plateau.addToColumn(colonne, (TCase) joueurActuel);
+        if( ligne > 0) {
+            aGagner(ligne, colonne);
+            switchCurrentPlayer();
         }
-        return aJoue;
     }
 
     inline TJoueur getJoueurActuel() const {

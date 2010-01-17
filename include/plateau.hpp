@@ -47,7 +47,17 @@ public:
         return retValue;
     }
 
+    int addToColumn(size_t column, TCase case_) {
+        bool aJoue = false;
 
+        for (size_t line = 0; line < Plateau::HAUTEUR && !aJoue; line ++) {
+            if (get(line,column) == NONE) {
+                set(line, column, case_);
+                return line;
+            }
+        }
+        return -1;
+    }
 };
 
 #endif // PLATEAU_HPP_INCLUDED
