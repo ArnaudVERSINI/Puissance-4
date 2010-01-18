@@ -3,6 +3,11 @@
 #include "joueur.h"
 
 template<TJoueur joueur>
+class IANode {
+
+}
+
+template<TJoueur joueur>
 class IAJoueur : public Joueur<joueur> {
 
     /**
