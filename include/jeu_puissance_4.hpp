@@ -180,6 +180,7 @@ class JeuxPuissanceQuatre {
      * Fonction altérant l'état du jeux en jouant.
      * @param colonne Colonne à jouer
      * @return True si le jeux a été possible
+     */
     inline bool jouer(size_t colonne) {
         if (partieFinie) {
             return false;
@@ -198,6 +199,7 @@ class JeuxPuissanceQuatre {
     /**
      * Retourne le joueur actuel.
      * @return Le joueur actuel.
+     */
     inline TJoueur getJoueurActuel() const {
         return joueurActuel;
     }
@@ -222,6 +224,7 @@ class JeuxPuissanceQuatre {
      * @param ligne Ligne de la case à retourner
      * @param  colonne Colonne de la ligne à afficher
      * @return La valeur de la case
+     */
     inline TCase getCasePlateau(size_t ligne, size_t colonne) const {
         return plateau.get(ligne, colonne);
     }
