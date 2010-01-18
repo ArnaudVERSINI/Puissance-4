@@ -80,9 +80,7 @@ public:
      * @return Le numero de ligne ou -1 en cas d'impossibilité.
      */
     int addToColumn(size_t column, TCase case_) {
-        bool aJoue = false;
-
-        for (size_t line = 0; line < Plateau::HAUTEUR && !aJoue; line ++) {
+        for (size_t line = 0; line < Plateau::HAUTEUR; line ++) {
             if (get(line,column) == NONE) {
                 set(line, column, case_);
                 return line;
