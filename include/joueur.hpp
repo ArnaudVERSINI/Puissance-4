@@ -30,6 +30,7 @@ public:
 
     /**
      * Retourne les informations sur le joueur comme ses réglages ou son nom.
+     @return Informations sur le joueur.
      */
     virtual const string getJoueurInformations()=0;
 };
