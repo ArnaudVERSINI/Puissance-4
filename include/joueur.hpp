@@ -9,11 +9,28 @@
 template<TJoueur joueur>
 class Joueur {
 public:
+
+    /**
+     * Constructeur par defaut faisant... ben pas grand chose.
+    */
     inline Joueur() {
     }
 
+    /**
+     * Méthode de demande de coup du joueur.
+     * @return La colonne que le joueur a choisi.
+    */
     virtual size_t effectuerCoup()=0;
+
+    /**
+     * Méthode appellé a chaque coup de l'adversaire pour le prendre en compte.
+     * @param Le coup à prendre en compte
+     */
     virtual void prendreEnCompteCoupAdversaire(size_t colonne)=0;
+
+    /**
+     * Retourne les informations sur le joueur comme ses réglages ou son nom.
+     */
     virtual const string getJoueurInformations()=0;
 };
 
