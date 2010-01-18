@@ -45,7 +45,7 @@ public:
         this->nom = nom;
     }
 
-    inline size_t effectuerCoup() {
+    inline virtual size_t effectuerCoup() {
         return 0;
     }
 
