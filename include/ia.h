@@ -1,11 +1,11 @@
 #ifndef IA_H_INCLUDED
 #define IA_H_INCLUDED
-#include "joueur.h"
+#include "joueur.hpp"
 
 template<TJoueur joueur>
 class IANode {
 
-}
+};
 
 template<TJoueur joueur>
 class IAJoueur : public Joueur<joueur> {
@@ -19,7 +19,7 @@ class IAJoueur : public Joueur<joueur> {
 public:
 
     IAJoueur() {
-        this->nom = nom;
+        //this->nom = nom;
     }
 
     inline size_t effectuerCoup() {
@@ -34,5 +34,5 @@ public:
         return JeuxPuissanceQuatre::playerToString(joueur) + " joueur de type IA";
     }
 
-}
+};
 #endif // IA_H_INCLUDED
