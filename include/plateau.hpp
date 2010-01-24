@@ -28,12 +28,12 @@ public :
     /**
      * Largeur du plateau de jeux.
      */
-    static const size_t LARGEUR = 6;
+    static const size_t LARGEUR = 7;
 
     /**
      * Hauteur du plateau de jeux.
      */
-    static const size_t HAUTEUR = 7;
+    static const size_t HAUTEUR = 6;
 
 private:
     /**
