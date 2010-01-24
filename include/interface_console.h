@@ -3,6 +3,7 @@
 
 #include "jeu_puissance_4.hpp"
 #include "joueur.hpp"
+#include "IHM_console.hpp"
 #include <iostream>
 #include <cstdlib>
 
@@ -16,6 +17,8 @@ namespace Console {
 
 class InterfaceConsole {
 
+	IHMConsole console ;
+
     JeuxPuissanceQuatre jeux;
 
     Joueur<JOUEUR_BLEU>& joueurBleu;
@@ -23,6 +26,10 @@ class InterfaceConsole {
     Joueur<JOUEUR_ROUGE>& joueurRouge;
 
 public :
+
+    inline void initialiser() {
+    	//console.Init();
+    }
 
     inline void printCase(TCase case_) {
         switch(case_) {
