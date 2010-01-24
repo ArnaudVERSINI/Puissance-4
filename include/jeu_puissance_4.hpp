@@ -5,8 +5,6 @@
 
 using namespace std;
 
-
-
 enum TJoueur {
     JOUEUR_BLEU = 0,
     JOUEUR_ROUGE = 1,
