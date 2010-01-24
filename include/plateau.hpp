@@ -19,6 +19,13 @@ public:
 
     inline TCoord() : x(0), y(0) {}
     inline TCoord(size_t x, size_t y) : x(x), y(y){}
+
+    inline size_t getX() const { return x; }
+    inline size_t getY() const { return y; }
+
+    inline void setX(size_t x) { this->x = x; }
+    inline void setY(size_t y) { this->y = y; }
+    inline void set(size_t x, size_t y) { this->x = x; this->y = y; }
  };
 
 class Plateau {
