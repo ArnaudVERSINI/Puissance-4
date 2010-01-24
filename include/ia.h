@@ -7,8 +7,8 @@ class IANode {
 
 };
 
-template<TJoueur joueur>
-class IAJoueur : public Joueur<joueur> {
+template<TJoueur joueur, unsigned int profondeur>
+class IAJoueurMinMax : public Joueur<joueur> {
 
     /**
      * Le plateau actuel, conservé ici pour permettre de le modifier
@@ -18,7 +18,7 @@ class IAJoueur : public Joueur<joueur> {
 
 public:
 
-    IAJoueur() {
+    IAJoueurMinMax() {
         //this->nom = nom;
     }
 
