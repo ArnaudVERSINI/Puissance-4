@@ -10,6 +10,17 @@ enum TCase {
 /**
  * Représentation interne du plateau de jeux.
  */
+
+ class TCoord {
+    size_t x;
+    size_t y;
+
+public:
+
+    inline TCoord() : x(0), y(0) {}
+    inline TCoord(size_t x, size_t y) : x(x), y(y){}
+ };
+
 class Plateau {
 
 public :
