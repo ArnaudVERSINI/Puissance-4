@@ -1,6 +1,7 @@
 #ifndef IA_H_INCLUDED
 #define IA_H_INCLUDED
 #include "joueur.hpp"
+#include <limits>
 
 template<TJoueur joueur>
 class IANode {
@@ -23,6 +24,25 @@ public:
     }
 
     inline size_t effectuerCoup() {
+        effectuerCoup(profondeur);
+    }
+    inline size_t effectuerCoup(int profondeurActuelle) {
+
+        size_t max_colonne = 0;
+        int alpha = - std::numeric_limits<int>::max();
+        int beta = std::numeric_limits<int>::max();
+        if (profondeur > 0 && !plateauActuel.isPartieFinit()) {
+            for(size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+                if (plateauActuel.colonnePleine(colonne)) {
+                    continue;
+                }
+
+            }
+        }
+        return max_colonne;
+    }
+
+    int evaluerGrille() {
         return 0;
     }
 
@@ -34,9 +54,12 @@ public:
         return JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA";
     }
 
+    inline int calculScore() {
+        return 0;
+    }
 };
 
-void machinQuiSertARien() {
+void machinQuiSertARienMaisQuiGenereDuCode() {
     IAJoueurMinMax<JOUEUR_BLEU, 256> joueur;
 }
 #endif // IA_H_INCLUDED
