@@ -194,7 +194,7 @@ class JeuxPuissanceQuatre {
             return false;
         }
         int ligne = plateau.addToColumn(colonne, (TCase) joueurActuel);
-        if( ligne > 0) {
+        if( ligne >= 0) {
             aGagner(ligne, colonne);
             switchCurrentPlayer();
         }
