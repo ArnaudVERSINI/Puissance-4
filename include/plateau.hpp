@@ -91,13 +91,23 @@ public:
         return retValue;
     }
 
+    bool colonnePleine(size_t colonne) {
+        bool pleine = true;
+        for (size_t line = 0; line < Plateau::HAUTEUR && pleine == true; line ++) {
+            if (get(line,colonne) == NONE) {
+                pleine = true;
+            }
+        }
+        return pleine;
+    }
+
     /**
      * Ajoute un pion dans la colonne.
      * @param column La colonne où ajouter le pion.
      * @param case_ Le pion à ajouter
      * @return Le numero de ligne ou -1 en cas d'impossibilité.
      */
-    int addToColumn(size_t column, TCase case_) {
+    inline int addToColumn(size_t column, TCase case_) {
         for (size_t line = 0; line < Plateau::HAUTEUR; line ++) {
             if (get(line,column) == NONE) {
                 set(line, column, case_);
@@ -105,6 +115,80 @@ public:
             }
         }
         return -1;
+    }
+
+    inline bool isPartieFinit() {
+        bool partieFinie = true;
+        for (size_t colonne_actuelle = 0; colonne_actuelle < LARGEUR; colonne_actuelle++) {
+            if ( get(HAUTEUR - 1, colonne_actuelle) == NONE) {
+                partieFinie = false;
+            }
+        }
+        return partieFinie;
+    }
+
+    inline bool aGagner(size_t ligne, size_t colonne, TCase caseActuel) {
+        size_t nb_pions = 0;
+
+        //Axe horizontal
+        for (
+            int colonne_actuelle = colonne - 1;
+            colonne_actuelle >= 0 && get(ligne, colonne_actuelle) == (TCase) caseActuel;
+            colonne_actuelle--) {
+            nb_pions++;
+        }
+        for (
+            size_t colonne_actuelle = colonne + 1;
+            colonne_actuelle < LARGEUR && get(ligne, colonne_actuelle) == (TCase) caseActuel;
+            colonne_actuelle++) {
+            nb_pions++;
+        }
+
+        if (nb_pions >= 3) {
+            return true;
+        }
+
+        nb_pions = 0;
+        //Axe vertical
+        for (
+            int ligne_actuelle = ligne - 1;
+            ligne_actuelle >= 0 && get(ligne_actuelle, colonne) == (TCase) caseActuel;
+            ligne_actuelle--) {
+            nb_pions++;
+        }
+
+        for (
+            size_t ligne_actuelle = ligne + 1;
+            ligne_actuelle < HAUTEUR && get(ligne_actuelle, colonne) == (TCase) caseActuel;
+            ligne_actuelle++) {
+            nb_pions++;
+        }
+
+        if (nb_pions >= 3) {
+            return true;
+        }
+
+        //Axe diagonale
+        nb_pions = 0;
+
+        for (
+            int ligne_actuelle = ligne - 1, colonne_actuelle = colonne - 1;
+            ligne_actuelle >= 0 && colonne_actuelle >= 0 && get(ligne_actuelle, colonne) == (TCase) caseActuel;
+            ligne_actuelle--, colonne_actuelle--) {
+            nb_pions++;
+        }
+
+        for (
+            size_t ligne_actuelle = ligne + 1, colonne_actuelle = colonne + 1;
+            ligne_actuelle < HAUTEUR && colonne_actuelle < LARGEUR && get(ligne_actuelle, colonne)== (TCase) caseActuel;
+            ligne_actuelle++, colonne_actuelle++) {
+            nb_pions++;
+        }
+
+        if (nb_pions >= 3) {
+            return true;
+        }
+
     }
 };
 
