@@ -12,6 +12,11 @@ enum TJoueur {
     JOUEUR_NUL = 2
 };
 
+inline TJoueur inverseJoueur(TJoueur joueur) {
+    return joueur == JOUEUR_BLEU ? JOUEUR_ROUGE : JOUEUR_BLEU;
+}
+
+
 /**
  * Représentation d'un jeux de puissance 4  et gérant les actions des joueurs.
  */
