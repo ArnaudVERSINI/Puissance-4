@@ -91,7 +91,7 @@ public:
         return retValue;
     }
 
-    bool colonnePleine(size_t colonne) {
+    inline bool colonnePleine(size_t colonne) {
         bool pleine = true;
         for (size_t line = 0; line < Plateau::HAUTEUR && pleine == true; line ++) {
             if (get(line,colonne) == NONE) {
@@ -105,16 +105,17 @@ public:
      * Ajoute un pion dans la colonne.
      * @param column La colonne où ajouter le pion.
      * @param case_ Le pion à ajouter
-     * @return Le numero de ligne ou -1 en cas d'impossibilité.
+     * @return Le numero de ligne
+     * @throw
      */
-    inline int addToColumn(size_t column, TCase case_) {
+    inline size_t addToColumn(size_t column, TCase case_) {
         for (size_t line = 0; line < Plateau::HAUTEUR; line ++) {
             if (get(line,column) == NONE) {
                 set(line, column, case_);
                 return line;
             }
         }
-        return -1;
+        throw 1;
     }
 
     inline bool isPartieFinit() {
@@ -125,6 +126,17 @@ public:
             }
         }
         return partieFinie;
+    }
+
+    inline void supprimerCoup(size_t colonne) {
+        if (colonne >= HAUTEUR)
+            throw 2;
+        for(int ligne_actuelle = HAUTEUR - 1; ligne_actuelle > 0; ligne_actuelle++) {
+            if (get(ligne_actuelle,colonne) != NONE) {
+                set(ligne_actuelle,colonne, NONE);
+                return;
+            }
+        }
     }
 
     inline bool aGagner(size_t ligne, size_t colonne, TCase caseActuel) {
