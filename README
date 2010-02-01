@@ -1,3 +1,5 @@
+Projet POO2-C++/ Math-Info
+
 #Compilation pour systeme Unix sans IDE
 cmake . -G"Unix Makefiles"
 
