@@ -25,7 +25,7 @@ public:
         //this->nom = nom;
     }
 
-    unsigned int effectuerCoup() {
+    size_t effectuerCoup() {
         return effectuerCoup(profondeur);
     }
 
