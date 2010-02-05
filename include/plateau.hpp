@@ -91,11 +91,16 @@ public:
         return retValue;
     }
 
+    /**
+         * Retourne vrai ou faux selon si la colonne est pleine ou non.
+         * @param colonne Colonne.
+         * @return vrai si la colonne est pleine.
+         */
     inline bool colonnePleine(size_t colonne) {
         bool pleine = true;
         for (size_t line = 0; line < Plateau::HAUTEUR && pleine == true; line ++) {
             if (get(line,colonne) == NONE) {
-                pleine = true;
+                pleine = false;
             }
         }
         return pleine;
@@ -105,7 +110,7 @@ public:
      * Ajoute un pion dans la colonne.
      * @param column La colonne où ajouter le pion.
      * @param case_ Le pion à ajouter
-     * @return Le numero de ligne
+     * @return Le numero de ligne où est le jeton
      * @throw
      */
     inline size_t addToColumn(size_t column, TCase case_) {
