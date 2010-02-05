@@ -91,28 +91,31 @@ private:
     }
 
     void aGagnerHorizontal() {
-           	Plateau* plateau = new Plateau();
+        {
+           	Plateau plateau;
            	// Ajout d'un pion dans colonne 2
-           	plateau->addToColumn(0,RED);
-           	plateau->addToColumn(1,RED);
-           	plateau->addToColumn(2,RED);
+           	plateau.addToColumn(0,RED);
+           	plateau.addToColumn(1,RED);
+           	plateau.addToColumn(2,RED);
            	// Test attendu a faux
-           	TEST_ASSERT(plateau->aGagner(0,2,RED) == false)
+           	TEST_ASSERT(plateau.aGagner(0,2,RED) == false)
 
            	// Test attendu a faux
-           	plateau->addToColumn(0,RED);
-           	TEST_ASSERT(plateau->aGagner(0,3,RED) == true)
-
+           	plateau.addToColumn(0,RED);
+           	TEST_ASSERT(plateau.aGagner(0,3,RED) == true)
+        };
+        {
            	// Initialisation du plateau
-           	plateau = new Plateau();
+           	Plateau plateau;
 
-           	plateau->addToColumn(0,RED);
-           	plateau->addToColumn(1,BLUE);
-           	plateau->addToColumn(2,RED);
+           	plateau.addToColumn(0,RED);
+           	plateau.addToColumn(1,BLUE);
+           	plateau.addToColumn(2,RED);
 
            	// Test attendu a faux
-           	plateau->addToColumn(3,RED);
-           	TEST_ASSERT(plateau->aGagner(0,3,RED) == false)
+           	plateau.addToColumn(3,RED);
+           	TEST_ASSERT(plateau.aGagner(0,3,RED) == false)
+        }
     }
 
     void aGagnerDiagGaucheDroite() {
