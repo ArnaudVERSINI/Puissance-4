@@ -13,7 +13,7 @@ int main() {
 	JoueurHumain<JOUEUR_ROUGE> joueur2("Franck");
 	cout << joueur1.getJoueurInformations() <<endl ;
 	cout << joueur2.getJoueurInformations() <<endl ;
-	Controler controleur(joueur1,joueur2) ;
+	Controler <JOUEUR_BLEU , JOUEUR_ROUGE> controleur(joueur1,joueur2) ;
 
 	return 0;
 }

@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-class Controler {
+template <TJoueur, TJoueur> class Controler {
 
 	JeuxPuissanceQuatre jeux;
 	IHMConsole console ;
