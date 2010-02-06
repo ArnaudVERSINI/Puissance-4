@@ -46,7 +46,11 @@ public:
     }
 
     inline virtual size_t effectuerCoup() {
-        return 0;
+        size_t colonne = 0;
+        cout << "Veuillez saisir le numero de colonne où jouer : ";
+        cin >> colonne;
+        cout << endl;
+        return colonne;
     }
 
     inline virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
