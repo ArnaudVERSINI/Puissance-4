@@ -33,9 +33,29 @@ public :
 
     void launchGame() {
         size_t colonne ;
+        bool jouable = false ;
     	while (not jeux.isEnded()) {
-    		cout << jeux.getJoueurActuelStr() ;
-    		cin >> colonne ;
+
+    		 do {
+					    cout << cout << jeux.getJoueurActuelStr() << " : ";
+    		            cout << "veuillez saisir le numero de colonne où jouer ( de 0 à " << Plateau::LARGEUR << "): ";
+    		            cin >> colonne;
+    		            cout << endl;
+    		            cout << colonne << endl;
+    		            if ( colonne >= Plateau::LARGEUR) {
+    		                cout << "Merci de saisir un numero entre 0 et " << Plateau::LARGEUR << endl;
+    		            }
+    		            else if (jeux.estColonneJouable(colonne) == false) {
+    		            	cout << "Cette colonne " << colonne << " est pleine. Veuillez en choisir une autre"<< endl;
+    		            }
+    		            else {
+    		            	jouable = true ;
+    		            }
+
+    		        } while (colonne != true);
+
+
+
     		jeux.jouer(colonne);
     		//jeux.switchCurrentPlayer();
     		console.print(jeux);
