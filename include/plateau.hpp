@@ -104,9 +104,9 @@ public:
     inline TCase get(size_t ligne, size_t colonne) const {
         TCase retValue = NONE;
         if ((ligne < LARGEUR) & (colonne < HAUTEUR)) {
-            retValue = plateau[ligne][colonne];
+            return plateau[ligne][colonne];
         }
-        return retValue;
+        throw PlateauException("Case inconnu");
     }
 
     /**
@@ -114,7 +114,7 @@ public:
          * @param colonne Colonne.
          * @return vrai si la colonne est pleine.
          */
-    inline bool colonnePleine(size_t colonne) {
+    inline bool colonnePleine(size_t colonne) const{
         bool pleine = true;
         for (size_t line = 0; line < Plateau::HAUTEUR && pleine == true; line ++) {
             if (get(line,colonne) == NONE) {
@@ -129,9 +129,11 @@ public:
      * @param column La colonne où ajouter le pion.
      * @param case_ Le pion à ajouter
      * @return Le numero de ligne où est le jeton
-     * @throw
+     * @throw PlateauException
      */
     inline size_t addToColumn(size_t column, TCase case_) {
+        if (column > LARGEUR)
+            throw PlateauException("Coordonnés impossibles");
         for (size_t line = 0; line < Plateau::HAUTEUR; line ++) {
             if (get(line,column) == NONE) {
                 set(line, column, case_);
@@ -141,7 +143,7 @@ public:
         throw PlateauException("Ajout dans la colonne impossible");
     }
 
-    inline bool isPartieFinit() {
+    inline bool isPartieFinit() const{
         bool partieFinie = true;
         for (size_t colonne_actuelle = 0; colonne_actuelle < LARGEUR; colonne_actuelle++) {
             if ( get(HAUTEUR - 1, colonne_actuelle) == NONE) {
@@ -153,7 +155,7 @@ public:
 
     inline void supprimerCoup(size_t colonne) {
         if (colonne >= HAUTEUR)
-            throw 2;
+            throw PlateauException("Aucun coup à supprimer");
         for(int ligne_actuelle = HAUTEUR - 1; ligne_actuelle > 0; ligne_actuelle++) {
             if (get(ligne_actuelle,colonne) != NONE) {
                 set(ligne_actuelle,colonne, NONE);
