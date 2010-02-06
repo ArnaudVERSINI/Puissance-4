@@ -21,8 +21,13 @@ public:
 private:
     void creation() {
     	Plateau plateau;
-        TEST_ASSERT(plateau.get(0, 0) == NONE)
+    	for (size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+    	    for(size_t ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
+                TEST_ASSERT(plateau.get(ligne, colonne) == NONE)
+    	    }
+    	}
     }
+
     void setGet() {
     	Plateau plateau;
             plateau.get(0,0);
