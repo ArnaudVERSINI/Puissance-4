@@ -46,10 +46,15 @@ public:
     }
 
     inline virtual size_t effectuerCoup() {
-        size_t colonne = 0;
-        cout << "Veuillez saisir le numero de colonne où jouer : ";
-        cin >> colonne;
-        cout << endl;
+        size_t colonne = Plateau::LARGEUR;
+        do {
+            cout << "Veuillez saisir le numero de colonne où jouer : ";
+            cin >> colonne;
+            cout << endl;
+            if (colonne >= Plateau::LARGEUR) {
+                cout << "Merci de saisir un numero entre 0 et " << Plateau::LARGEUR << endl;
+            }
+        } while (colonne >= Plateau::LARGEUR);
         return colonne;
     }
 
