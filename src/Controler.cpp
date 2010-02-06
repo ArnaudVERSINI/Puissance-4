@@ -14,6 +14,7 @@ int main() {
 	cout << joueur1.getJoueurInformations() <<endl ;
 	cout << joueur2.getJoueurInformations() <<endl ;
 	Controler controleur(joueur1,joueur2) ;
+	controleur.launchGame();
 
 	return 0;
 }
