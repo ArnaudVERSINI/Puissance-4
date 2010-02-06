@@ -11,7 +11,7 @@ using namespace std;
 
 
 
-template <TJoueur, TJoueur> class Controler {
+class Controler {
 
 	JeuxPuissanceQuatre jeux;
 	IHMConsole console ;
@@ -28,7 +28,11 @@ public :
     inline Controler(Joueur<JOUEUR_BLEU>& joueurBleu_, Joueur<JOUEUR_ROUGE>& joueurRouge_) :
             joueurBleu(joueurBleu_),
             joueurRouge(joueurRouge_){
-    	int colonne ;
+
+    }
+
+    void launchGame() {
+        size_t colonne ;
     	while (not jeux.isEnded()) {
     		cout << jeux.getJoueurActuelStr() ;
     		cin >> colonne ;
@@ -36,12 +40,7 @@ public :
     		//jeux.switchCurrentPlayer();
     		console.print(jeux);
     	}
-
     	cout << "Le gagnant est :" << jeux.getJoueurActuelGagnantStr() << endl;
-
-    }
-
-    inline ~Controler() {
 
     }
 };
