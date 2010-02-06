@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "testPlateau.hpp"
+#include "testJeuxPuiss4.hpp"
+
 
 using namespace std;
 
@@ -105,6 +107,7 @@ int main(int argc, char *argv[])
 		Test::Suite ts;
 
 		ts.add(auto_ptr<Test::Suite>(new PlateauTestSuite));
+		ts.add(auto_ptr<Test::Suite>(new JeuxPuiss4TestSuite));
 		// Add a line here when adding a new test MODULE
 
 		auto_ptr<Test::Output> output(cmdline(argc, argv));

@@ -196,6 +196,15 @@ class JeuxPuissanceQuatre {
         }
         return retValue;
     }
+
+    /**
+             * Retourne vrai ou faux selon si la colonne est jouable ou non.
+             * @param colonne Colonne.
+             * @return vrai si la colonne est jouable.
+             */
+        inline bool estColonneJouable(size_t colonne) const{
+           return plateau.colonneJouable(colonne);
+        }
 };
 
 #endif // JEU_PUISSANCE_4_HPP_INCLUDED
