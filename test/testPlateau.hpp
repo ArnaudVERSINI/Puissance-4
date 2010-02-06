@@ -13,6 +13,7 @@ public:
 		TEST_ADD(PlateauTestSuite::aGagnerHorizontal)
 		TEST_ADD(PlateauTestSuite::aGagnerVertical)
 		TEST_ADD(PlateauTestSuite::aGagnerDiagGaucheDroite)
+		TEST_ADD(PlateauTestSuite::aGagnerDiagDroiteGauche)
     }
 
 
@@ -144,7 +145,27 @@ private:
 
 
         }
+    void aGagnerDiagDroiteGauche() {
+               	Plateau plateau;
+               	// Ajout d'un pion dans colonne 2
+               	plateau.addToColumn(6,RED);
+            	plateau.addToColumn(5,BLUE);
+               	plateau.addToColumn(5,RED);
+               	plateau.addToColumn(4,BLUE);
+               	plateau.addToColumn(4,BLUE);
+               	plateau.addToColumn(4,RED);
+               	// Test attendu a faux
+               	TEST_ASSERT(plateau.aGagner(2,4,RED) == false)
 
+               	// Test attendu a faux
+               	plateau.addToColumn(3,BLUE);
+               	plateau.addToColumn(3,BLUE);
+               	plateau.addToColumn(3,BLUE);
+               	plateau.addToColumn(3,RED);
+               	TEST_ASSERT(plateau.aGagner(3,3,RED) == true)
+
+
+            }
 };
 
 

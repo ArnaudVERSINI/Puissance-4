@@ -98,7 +98,7 @@ public:
      */
     inline TCase get(size_t ligne, size_t colonne) const {
         TCase retValue = NONE;
-        if ((ligne < LARGEUR) & (colonne < HAUTEUR)) {
+        if ((ligne < HAUTEUR) & (colonne < LARGEUR)) {
             return plateau[ligne][colonne];
         }
         throw PlateauException("Case inconnu");
@@ -205,15 +205,15 @@ public:
 
         for (
             int ligne_actuelle = ligne - 1, colonne_actuelle = colonne - 1;
-            ligne_actuelle >= 0 && colonne_actuelle >= 0 && get(ligne_actuelle, colonne) == (TCase) caseActuel;
+            ligne_actuelle >= 0 && colonne_actuelle >= 0 && get(ligne_actuelle, colonne_actuelle) == (TCase) caseActuel;
             ligne_actuelle--, colonne_actuelle--) {
             nb_pions++;
         }
 
         for (
-            size_t ligne_actuelle = ligne + 1, colonne_actuelle = colonne + 1;
-            ligne_actuelle < HAUTEUR && colonne_actuelle < LARGEUR && get(ligne_actuelle, colonne)== (TCase) caseActuel;
-            ligne_actuelle++, colonne_actuelle++) {
+            size_t ligne_actuelle = ligne - 1, colonne_actuelle = colonne + 1;
+            ligne_actuelle < HAUTEUR && colonne_actuelle < LARGEUR && get(ligne_actuelle, colonne_actuelle)== (TCase) caseActuel;
+            ligne_actuelle--, colonne_actuelle++) {
             nb_pions++;
         }
 
