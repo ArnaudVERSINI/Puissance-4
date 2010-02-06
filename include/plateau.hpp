@@ -105,18 +105,18 @@ public:
     }
 
     /**
-         * Retourne vrai ou faux selon si la colonne est pleine ou non.
+         * Retourne vrai ou faux selon si la colonne est jouable ou non.
          * @param colonne Colonne.
-         * @return vrai si la colonne est pleine.
+         * @return vrai si la colonne est jouable.
          */
-    inline bool colonnePleine(size_t colonne) const{
-        bool pleine = true;
-        for (size_t line = 0; line < Plateau::HAUTEUR && pleine == true; line ++) {
+    inline bool colonneJouable(size_t colonne) const{
+        bool jouable = false;
+        for (size_t line = 0; line < Plateau::HAUTEUR && jouable == false; line ++) {
             if (get(line,colonne) == NONE) {
-                pleine = false;
+            	jouable = true;
             }
         }
-        return pleine;
+        return jouable;
     }
 
     /**

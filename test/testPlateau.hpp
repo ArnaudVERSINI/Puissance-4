@@ -8,7 +8,7 @@ public:
     {
         TEST_ADD(PlateauTestSuite::creation)
 		TEST_ADD(PlateauTestSuite::setGet)
-		TEST_ADD(PlateauTestSuite::colonnePleine)
+		TEST_ADD(PlateauTestSuite::colonneJouable)
 		TEST_ADD(PlateauTestSuite::addToColumn)
 		TEST_ADD(PlateauTestSuite::aGagnerHorizontal)
 		TEST_ADD(PlateauTestSuite::aGagnerVertical)
@@ -45,14 +45,14 @@ private:
 
         }
 
-    void colonnePleine() {
+    void colonneJouable() {
     	Plateau plateau;
-    	TEST_ASSERT(plateau.colonnePleine(0) == false)
+    	TEST_ASSERT(plateau.colonneJouable(0) == true)
 
     	for(int ligne = 0 ; ligne <= Plateau::HAUTEUR + 3; ligne++) {
     		plateau.set(ligne,3,RED);
     	}
-    	TEST_ASSERT(plateau.colonnePleine(3) == true)
+    	TEST_ASSERT(plateau.colonneJouable(3) == false)
     }
 
     void addToColumn() {

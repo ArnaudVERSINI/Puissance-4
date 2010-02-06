@@ -42,7 +42,7 @@ public:
 
         if (profondeur > 0 && !plateauActuel.isPartieFinit()) {
             for(size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
-                if (plateauActuel.colonnePleine(colonne)) {
+                if (plateauActuel.colonneJouable(colonne) == false) {
                     continue;
                 }
 
