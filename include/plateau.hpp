@@ -2,6 +2,7 @@
 #define PLATEAU_HPP_INCLUDED
 
 #include <string>
+#include <stdexcept>
 
 using namespace std;
 
@@ -32,16 +33,11 @@ public:
     inline void set(size_t x, size_t y) { this->x = x; this->y = y; }
  };
 
-class PlateauException {
+class PlateauException : public runtime_error {
 
-    const char* message;
 
     public :
-    PlateauException(const char* message) : message(message){
-    }
-
-    const char* getMessage() {
-        return message;
+    PlateauException(const char* message) : runtime_error(message) {
     }
 };
 
