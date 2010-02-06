@@ -97,8 +97,7 @@ public:
      * @return La valeur de la case ou NONE si case incorrecte.
      */
     inline TCase get(size_t ligne, size_t colonne) const {
-        TCase retValue = NONE;
-        if ((ligne < LARGEUR) & (colonne < HAUTEUR)) {
+        if ((ligne < HAUTEUR) && (colonne < LARGEUR)) {
             return plateau[ligne][colonne];
         }
         throw PlateauException("Case inconnu");
