@@ -97,7 +97,12 @@ public:
      * @return La valeur de la case ou NONE si case incorrecte.
      */
     inline TCase get(size_t ligne, size_t colonne) const {
+<<<<<<< HEAD
         if ((ligne < HAUTEUR) && (colonne < LARGEUR)) {
+=======
+        TCase retValue = NONE;
+        if ((ligne < HAUTEUR) & (colonne < LARGEUR)) {
+>>>>>>> 0a26e1fd8cf1abbee1f125785e0f1de6c1b9b970
             return plateau[ligne][colonne];
         }
         throw PlateauException("Case inconnu");
@@ -204,15 +209,15 @@ public:
 
         for (
             int ligne_actuelle = ligne - 1, colonne_actuelle = colonne - 1;
-            ligne_actuelle >= 0 && colonne_actuelle >= 0 && get(ligne_actuelle, colonne) == (TCase) caseActuel;
+            ligne_actuelle >= 0 && colonne_actuelle >= 0 && get(ligne_actuelle, colonne_actuelle) == (TCase) caseActuel;
             ligne_actuelle--, colonne_actuelle--) {
             nb_pions++;
         }
 
         for (
-            size_t ligne_actuelle = ligne + 1, colonne_actuelle = colonne + 1;
-            ligne_actuelle < HAUTEUR && colonne_actuelle < LARGEUR && get(ligne_actuelle, colonne)== (TCase) caseActuel;
-            ligne_actuelle++, colonne_actuelle++) {
+            size_t ligne_actuelle = ligne - 1, colonne_actuelle = colonne + 1;
+            ligne_actuelle < HAUTEUR && colonne_actuelle < LARGEUR && get(ligne_actuelle, colonne_actuelle)== (TCase) caseActuel;
+            ligne_actuelle--, colonne_actuelle++) {
             nb_pions++;
         }
 
