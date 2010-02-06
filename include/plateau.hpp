@@ -1,6 +1,10 @@
 #ifndef PLATEAU_HPP_INCLUDED
 #define PLATEAU_HPP_INCLUDED
 
+#include <string>
+
+using namespace std;
+
 enum TCase {
     BLUE = 0,
     RED = 1,
@@ -27,6 +31,20 @@ public:
     inline void setY(size_t y) { this->y = y; }
     inline void set(size_t x, size_t y) { this->x = x; this->y = y; }
  };
+
+class PlateauException {
+
+    const string& message;
+
+    public :
+    PlateauException(const string& message) : message(message){
+
+    }
+
+    const string& getMessage() {
+        return message;
+    }
+};
 
 class Plateau {
 
@@ -120,7 +138,7 @@ public:
                 return line;
             }
         }
-        throw 1;
+        throw PlateauException("Ajout dans la colonne impossible");
     }
 
     inline bool isPartieFinit() {
