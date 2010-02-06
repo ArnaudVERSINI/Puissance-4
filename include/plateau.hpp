@@ -34,14 +34,13 @@ public:
 
 class PlateauException {
 
-    const string& message;
+    const char* message;
 
     public :
-    PlateauException(const string& message) : message(message){
-
+    PlateauException(const char* message) : message(message){
     }
 
-    const string& getMessage() {
+    const char* getMessage() {
         return message;
     }
 };
