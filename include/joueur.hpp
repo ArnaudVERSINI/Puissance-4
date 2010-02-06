@@ -59,7 +59,7 @@ public:
     }
 
     inline virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
-
+        //Nothing to do
     }
 
     inline virtual const string getJoueurInformations() {
