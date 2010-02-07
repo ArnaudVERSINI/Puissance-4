@@ -3,10 +3,6 @@
 #include "joueur.hpp"
 #include <limits>
 
-template<TJoueur joueur>
-class IANode {
-
-};
 
 template<TJoueur joueur_actuel, unsigned int profondeur>
 class IAJoueurMinMax : public Joueur<joueur_actuel> {
@@ -60,7 +56,7 @@ public:
         return max_colonne;
     }
 
-    inline int min(const unsigned int profondeurActuelle, const int alpha, const int beta) {
+    inline int min(const unsigned int profondeurActuelle, const int alpha, int beta) {
         if (profondeurActuelle == 0) {
             return calculScore();
         }
@@ -73,7 +69,8 @@ public:
             if (!plateauActuel.colonneJouable(colonne)) {
                 continue;
             }
-            plateauActuel.addToColumn(colonne);
+
+            plateauActuel.addToColumn(colonne, (TCase) this->getJoueurAdverse());
 
             int scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
 
@@ -86,13 +83,10 @@ public:
             if(beta <= alpha) {
                 return beta;
             }
-
         }
     }
 
-
-
-    inline int max(unsigned int profondeurActuelle, const int alpha, const int beta) {
+    inline int max(unsigned int profondeurActuelle, int alpha, const int beta) {
 
     }
 
@@ -108,12 +102,10 @@ public:
     inline virtual const string getJoueurInformations() {
         return JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA";
     }
-
-
 };
 
 void machinQuiSertARienMaisQuiGenereDuCode() {
     IAJoueurMinMax<JOUEUR_BLEU, 256> joueur;
-    IAJoueurMinMax<JOUEUR_ROUGE, 256> joueur;
+    IAJoueurMinMax<JOUEUR_ROUGE, 256> joueur2;
 }
 #endif // IA_H_INCLUDED
