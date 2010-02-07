@@ -13,7 +13,6 @@ target_link_libraries(unit_tests ${CPPTEST_LIBRARY})
 
 
 add_executable (consolepuissance_4  src/Controler.cpp )
-add_executable (puissance_4  src/interface_console.cpp )
 
 enable_testing()
 ADD_TEST(unit_tests ${EXECUTABLE_OUTPUT_PATH}/unit_tests)
