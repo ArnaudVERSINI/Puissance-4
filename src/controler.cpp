@@ -5,7 +5,7 @@
  *      Author: Franck Arrestier
  */
 
-#include "Controler.hpp"
+#include "controler.hpp"
 
 int main() {
     PlateauException exception("Toto");
