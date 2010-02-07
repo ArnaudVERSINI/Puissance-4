@@ -1,6 +1,9 @@
 #ifndef JOUEUR_HPP_INCLUDED
 #define JOUEUR_HPP_INCLUDED
 #include "jeu_puissance_4.hpp"
+#include <iostream>
+
+using namespace std;
 
 /**
  * Classe virtuelle pure de gestion d'un joueur
@@ -41,8 +44,9 @@ class JoueurHumain : public Joueur<joueur> {
     string nom;
 
 public:
-    JoueurHumain(string nom) {
-        this->nom = nom;
+    JoueurHumain() {
+        cout << "Vueillez entrez votre nom : ";
+        cin >> this->nom;
     }
 
     inline virtual size_t effectuerCoup() {
