@@ -36,6 +36,14 @@ public:
      @return Informations sur le joueur.
      */
     virtual const string getJoueurInformations()=0;
+
+    /**
+     * Fonction utilitaire renvoyant le joueur adverse
+     * @return Le joueur adverse
+     */
+     inline TJoueur getJoueurAdverse() {
+        return inverseJoueur(joueur);
+     }
 };
 
 
@@ -73,7 +81,7 @@ public:
     }
 
     inline virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
-        plateau.addToColumn(colonne, (TCase) inverseJoueur(joueur));
+        plateau.addToColumn(colonne, (TCase) this->getJoueurAdverse());
     }
 
     inline virtual const string getJoueurInformations() {
