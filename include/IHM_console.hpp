@@ -20,10 +20,6 @@ namespace ConsoleBase {
 
 class IHMConsole {
 
-
-
-
-
 public :
 
     inline void printCase(TCase case_) {

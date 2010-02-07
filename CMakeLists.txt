@@ -10,8 +10,6 @@ include_directories (${PUISSANCE4_SOURCE_DIR}/include)
 add_executable (unit_tests  test/unit_test.cpp)
 target_link_libraries(unit_tests ${CPPTEST_LIBRARY})
 
-
-
 add_executable (consolepuissance_4  src/Controler.cpp )
 
 enable_testing()
