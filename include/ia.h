@@ -11,8 +11,6 @@ class IANode {
 template<TJoueur joueur_actuel, unsigned int profondeur>
 class IAJoueurMinMax : public Joueur<joueur_actuel> {
 
-
-
     /**
      * Le plateau actuel, conservé ici pour permettre de le modifier
      * lors du traitement de l'arbre
@@ -21,7 +19,7 @@ class IAJoueurMinMax : public Joueur<joueur_actuel> {
 
 public:
 
-    IAJoueurMinMax() {
+    inline IAJoueurMinMax() {
         //this->nom = nom;
     }
 
@@ -29,11 +27,15 @@ public:
         return effectuerCoup(profondeur);
     }
 
-    int calculScore() {
+    inline int calculScore() {
         return 0;
     }
 
-    size_t effectuerCoup(const unsigned int profondeurActuelle) {
+    inline bool isPartitFinit(size_t ligne, size_t colonne) {
+
+    }
+
+    inline size_t effectuerCoup(const unsigned int profondeurActuelle) {
 
         size_t max_colonne = 0;
         const int betaInitial = numeric_limits<int>::max();
@@ -66,6 +68,26 @@ public:
         if (plateauActuel.isPartieFinit()) {
             return calculScore();
         }
+
+        for (size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+            if (!plateauActuel.colonneJouable(colonne)) {
+                continue;
+            }
+            plateauActuel.addToColumn(colonne);
+
+            int scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+
+            plateauActuel.supprimerCoup(colonne);
+
+            if (beta > scoreTemporaire) {
+                beta = profondeurActuelle;
+            }
+
+            if(beta <= alpha) {
+                return beta;
+            }
+
+        }
     }
 
 
@@ -79,11 +101,11 @@ public:
         return 0;
     }
 
-    virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
+    inline virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
         plateauActuel.addToColumn(colonne, (TCase) inverseJoueur(joueur_actuel));
     }
 
-    virtual const string getJoueurInformations() {
+    inline virtual const string getJoueurInformations() {
         return JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA";
     }
 
@@ -92,5 +114,6 @@ public:
 
 void machinQuiSertARienMaisQuiGenereDuCode() {
     IAJoueurMinMax<JOUEUR_BLEU, 256> joueur;
+    IAJoueurMinMax<JOUEUR_ROUGE, 256> joueur;
 }
 #endif // IA_H_INCLUDED
