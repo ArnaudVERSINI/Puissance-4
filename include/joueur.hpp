@@ -42,32 +42,42 @@ public:
 template<TJoueur joueur>
 class JoueurHumain : public Joueur<joueur> {
     string nom;
+    Plateau plateau;
+
+    inline string getName() {
+        return JeuxPuissanceQuatre::playerToString(joueur);
+    }
 
 public:
     JoueurHumain() {
-        cout << "Vueillez entrez votre nom : ";
-        cin >> this->nom;
+        cout << "Vueillez entrez le nom du joueur " << getName() << " : " ;
+        cin >> nom;
     }
 
     inline virtual size_t effectuerCoup() {
         size_t colonne = Plateau::LARGEUR;
         do {
+            cout << "Coup du joueur " << getName() << " nommé " << nom << endl;
             cout << "Veuillez saisir le numero de colonne où jouer : ";
             cin >> colonne;
             cout << endl;
             if (colonne >= Plateau::LARGEUR) {
                 cout << "Merci de saisir un numero entre 0 et " << Plateau::LARGEUR << endl;
             }
+            if (!plateau.colonneJouable(colonne)) {
+                cout << "Merci de saisir une colonne non vide" << endl;
+            }
         } while (colonne >= Plateau::LARGEUR);
+        plateau.addToColumn(colonne, (TCase) joueur);
         return colonne;
     }
 
     inline virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
-        //Nothing to do
+        plateau.addToColumn(colonne, (TCase) inverseJoueur(joueur));
     }
 
     inline virtual const string getJoueurInformations() {
-        return JeuxPuissanceQuatre::playerToString(joueur) + " joueur humain nommé " + nom;
+        return getName() + " joueur humain nommé " + nom;
     }
 };
 #endif
