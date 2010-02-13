@@ -2,7 +2,7 @@
 #define IA_H_INCLUDED
 #include "joueur.hpp"
 #include <limits>
-
+#include <cstdlib>
 
 template<TJoueur joueur_actuel, unsigned int profondeur>
 class IAJoueurMinMax : public Joueur<joueur_actuel> {
@@ -16,22 +16,25 @@ class IAJoueurMinMax : public Joueur<joueur_actuel> {
 public:
 
     inline IAJoueurMinMax() {
-        //this->nom = nom;
-    }
-
-    size_t effectuerCoup() {
-        return effectuerCoup(profondeur);
     }
 
     inline int calculScore() {
         return 0;
     }
 
-    inline bool isPartitFinit(size_t ligne, size_t colonne) {
+    inline bool isPartieFinit(size_t ligne, size_t colonne, TCase case_) {
+        if (plateauActuel.isPartieFinit()) {
+            return true;
+        }
 
+        if (plateauActuel.aGagner(ligne, colonne, case_)) {
+            return true;
+        }
+
+        return false;
     }
 
-    inline size_t effectuerCoup(const unsigned int profondeurActuelle) {
+    inline size_t effectuerCoup() {
 
         size_t max_colonne = 0;
         const int betaInitial = numeric_limits<int>::max();
@@ -45,7 +48,7 @@ public:
                 }
 
                 plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
-                int score_temp =  min(profondeurActuelle, alpha, betaInitial);
+                int score_temp =  min(profondeur, alpha, betaInitial);
                 if (alpha < score_temp) {
                     max_colonne = colonne;
                     alpha = score_temp;
@@ -58,11 +61,8 @@ public:
 
     inline int min(const unsigned int profondeurActuelle, const int alpha, int beta) {
         if (profondeurActuelle == 0) {
-            return calculScore();
-        }
-
-        if (plateauActuel.isPartieFinit()) {
-            return calculScore();
+            int calculScoreResult = calculScore();
+            return calculScoreResult;
         }
 
         for (size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
@@ -70,30 +70,66 @@ public:
                 continue;
             }
 
-            plateauActuel.addToColumn(colonne, (TCase) this->getJoueurAdverse());
+            size_t ligne_actuelle = plateauActuel.addToColumn(colonne, (TCase) this->getJoueurAdverse());
 
-            int scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+            int scoreTemporaire;
+
+            //Pour éviter un appel récursif inutil
+            if (this->isPartieFinit(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
+                scoreTemporaire = - numeric_limits<int>::max();
+            } else {
+                scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+            }
 
             plateauActuel.supprimerCoup(colonne);
 
             if (beta > scoreTemporaire) {
-                beta = profondeurActuelle;
+                beta = scoreTemporaire;
             }
 
             if(beta <= alpha) {
                 return beta;
             }
         }
+        return beta;
     }
 
+    //Pas finit
     inline int max(unsigned int profondeurActuelle, int alpha, const int beta) {
+        if (profondeurActuelle == 0) {
+            int calculScoreResult = calculScore();
+            return calculScoreResult;
+        }
 
+        for (size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+            if (!plateauActuel.colonneJouable(colonne)) {
+                continue;
+            }
+
+            size_t ligne_actuelle = plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
+
+            int scoreTemporaire;
+
+            //Pour éviter un appel récursif inutil
+            if (this->isPartieFinit(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
+                scoreTemporaire = numeric_limits<int>::max();
+            } else {
+                scoreTemporaire = min(profondeurActuelle-1, alpha, beta);
+            }
+
+            plateauActuel.supprimerCoup(colonne);
+
+            if (alpha < scoreTemporaire) {
+                alpha = scoreTemporaire;
+            }
+
+            if(beta <= alpha) {
+                return alpha;
+            }
+        }
+        return alpha;
     }
 
-
-    int evaluerGrille() {
-        return 0;
-    }
 
     inline virtual void prendreEnCompteCoupAdversaire(size_t colonne) {
         plateauActuel.addToColumn(colonne, (TCase) inverseJoueur(joueur_actuel));
@@ -103,9 +139,4 @@ public:
         return JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA";
     }
 };
-
-void machinQuiSertARienMaisQuiGenereDuCode() {
-    IAJoueurMinMax<JOUEUR_BLEU, 256> joueur;
-    IAJoueurMinMax<JOUEUR_ROUGE, 256> joueur2;
-}
 #endif // IA_H_INCLUDED
