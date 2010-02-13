@@ -38,6 +38,8 @@ class PlateauException : public runtime_error {
 
     public :
     PlateauException(const char* message) : runtime_error(message) {
+        //int* pointeur = NULL;
+        //*pointeur = 0;
     }
 };
 
@@ -105,10 +107,10 @@ public:
     }
 
     /**
-         * Retourne vrai ou faux selon si la colonne est jouable ou non.
-         * @param colonne Colonne.
-         * @return vrai si la colonne est jouable.
-         */
+     * Retourne vrai ou faux selon si la colonne est jouable ou non.
+     * @param colonne Colonne.
+     * @return vrai si la colonne est jouable.
+     */
     inline bool colonneJouable(size_t colonne) const{
         bool jouable = false;
         for (size_t line = 0; line < Plateau::HAUTEUR && jouable == false; line ++) {
@@ -149,14 +151,15 @@ public:
     }
 
     inline void supprimerCoup(size_t colonne) {
-        if (colonne >= HAUTEUR)
-            throw PlateauException("Aucun coup à supprimer");
-        for(int ligne_actuelle = HAUTEUR - 1; ligne_actuelle > 0; ligne_actuelle++) {
+        if (colonne >= LARGEUR)
+            throw PlateauException("paramétre inconnus");
+        for(int ligne_actuelle = HAUTEUR - 1; ligne_actuelle >= 0; ligne_actuelle--) {
             if (get(ligne_actuelle,colonne) != NONE) {
                 set(ligne_actuelle,colonne, NONE);
                 return;
             }
         }
+        throw PlateauException("Coup introuvable");
     }
 
     inline bool aGagner(size_t ligne, size_t colonne, TCase caseActuel) {
