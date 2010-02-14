@@ -58,7 +58,7 @@ class JoueurHumain : public Joueur<joueur> {
 
 public:
     JoueurHumain() {
-        cout << "Vueillez entrez le nom du joueur " << getName() << " : " ;
+        cout << "Veuillez entrez le nom du joueur " << getName() << " : " ;
         cin >> nom;
     }
 
