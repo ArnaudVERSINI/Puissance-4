@@ -161,6 +161,10 @@ public:
         throw PlateauException("Coup introuvable");
     }
 
+    inline bool aGagner(TCoord coord, TCase caseActuelle) {
+        return aGagner(coord.getX(), coord.getY(), caseActuelle);
+    }
+
     inline bool aGagner(size_t ligne, size_t colonne, TCase caseActuel) {
         size_t nb_pions = 0;
 
