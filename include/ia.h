@@ -18,8 +18,98 @@ public:
     inline IAJoueurMinMax() {
     }
 
+
+    inline int calculScoreJoueurActuel () {
+        unsigned int nbPoints = 0;
+        unsigned int scoreIntermediaire = 0;
+        for(int ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
+            unsigned int nbCasesLibreAvant = 0;
+            unsigned int nbCasesJoueur = 0;
+            unsigned int nbCasesLibreApres = 0;
+            for(int colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+                TCase caseActuelle = plateauActuel.get(ligne, colonne);
+                if (caseActuelle == (TCase) joueur_actuel) {
+                    nbCasesJoueur++;
+                } else if (caseActuelle == NONE) {
+                    if (nbCasesJoueur == 0) {
+                        nbCasesLibreAvant++;
+                    } else {
+                        nbCasesLibreApres++;
+                    }
+                } else {
+                    unsigned int facteur = 16;
+
+                    if (nbCasesLibreAvant > 0 && nbCasesLibreApres > 0) {
+                        facteur = 32;
+                    }
+                    if ((nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur) < 4) {
+                        //cout << "Pas assez de cases" << endl;
+                        facteur = 0;
+                    }
+                    //On favorise les situations multiples
+                    if (scoreIntermediaire > 100) {
+                        facteur *= 4;
+                    }
+                    scoreIntermediaire += facteur * (nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur);
+                    nbCasesLibreAvant = nbCasesLibreApres = nbCasesJoueur = 0;
+                }
+            }
+        }
+        //cout << nbPoints << endl;
+        nbPoints += scoreIntermediaire;
+        if (nbPoints > 0) {
+            //cout << "NbPoints " << nbPoints << endl;
+        }
+        return nbPoints;
+    }
+
+    inline int calculScoreJoueurAdverse () {
+        unsigned int nbPoints = 0;
+        unsigned int scoreIntermediaire = 0;
+        for(int ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
+            unsigned int nbCasesLibreAvant = 0;
+            unsigned int nbCasesJoueurAdverse = 0;
+            unsigned int nbCasesLibreApres = 0;
+            for(int colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+                TCase caseActuelle = plateauActuel.get(ligne, colonne);
+                if (caseActuelle == (TCase) this->getJoueurAdverse()) {
+                    nbCasesJoueurAdverse++;
+                } else if (caseActuelle == NONE) {
+                    if (nbCasesJoueurAdverse == 0) {
+                        nbCasesLibreAvant++;
+                    } else {
+                        nbCasesLibreApres++;
+                    }
+                } else {
+                    unsigned int facteur = 16;
+
+                    if (nbCasesLibreAvant > 0 && nbCasesLibreApres > 0) {
+                        facteur = 32;
+                    }
+                    if ((nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueurAdverse) < 4) {
+                        //cout << "Pas assez de cases" << endl;
+                        facteur = 0;
+                    }
+                    //On favorise les situations multiples
+                    if (scoreIntermediaire > 100) {
+                        facteur *= 4;
+                    }
+                    scoreIntermediaire += facteur * (nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueurAdverse);
+                    nbCasesLibreAvant = nbCasesLibreApres = nbCasesJoueurAdverse = 0;
+                }
+            }
+        }
+        //cout << nbPoints << endl;
+        nbPoints += scoreIntermediaire;
+        if (nbPoints > 0) {
+            //cout << "NbPoints " << nbPoints << endl;
+        }
+        return nbPoints;
+    }
+
     inline int calculScore() {
-        return 0;
+        int score = calculScoreJoueurActuel() - calculScoreJoueurAdverse();
+        return score;
     }
 
     inline bool isPartieFinit(size_t ligne, size_t colonne, TCase case_) {
@@ -75,7 +165,10 @@ public:
             int scoreTemporaire;
 
             //Pour éviter un appel récursif inutil
-            if (this->isPartieFinit(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
+            if (plateauActuel.isPartieFinit()) {
+                scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+            }
+            else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse()) ) {
                 scoreTemporaire = - numeric_limits<int>::max();
             } else {
                 scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
@@ -111,7 +204,9 @@ public:
             int scoreTemporaire;
 
             //Pour éviter un appel récursif inutil
-            if (this->isPartieFinit(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
+            if (plateauActuel.isPartieFinit()) {
+                scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+            } else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) joueur_actuel) ) {
                 scoreTemporaire = numeric_limits<int>::max();
             } else {
                 scoreTemporaire = min(profondeurActuelle-1, alpha, beta);
@@ -127,6 +222,7 @@ public:
                 return alpha;
             }
         }
+        cout << "Retour de max " << alpha << endl;
         return alpha;
     }
 
