@@ -16,6 +16,12 @@ class IAJoueurMinMax : public Joueur<joueur_actuel> {
 public:
 
     inline IAJoueurMinMax() {
+/*    	plateauActuel.addToColumn(2,RED);
+    	plateauActuel.addToColumn(6,BLUE);
+    	plateauActuel.addToColumn(3,RED);
+    	plateauActuel.addToColumn(3,BLUE);
+    	plateauActuel.addToColumn(4,RED);
+    	plateauActuel.addToColumn(1,BLUE);*/
     }
 
 
@@ -64,6 +70,7 @@ public:
     }
 
     inline int calculScoreJoueurAdverse () {
+    	//cout << "Calcul score adverse" << endl;
         unsigned int nbPoints = 0;
         unsigned int scoreIntermediaire = 0;
         for(int ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
@@ -73,11 +80,14 @@ public:
             for(int colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
                 TCase caseActuelle = plateauActuel.get(ligne, colonne);
                 if (caseActuelle == (TCase) this->getJoueurAdverse()) {
+                	//cout <<  "ligne " << ligne << "colonne " << colonne <<"dans le if " << endl;
                     nbCasesJoueurAdverse++;
                 } else if (caseActuelle == NONE) {
                     if (nbCasesJoueurAdverse == 0) {
+                    	//cout <<  "ligne " << ligne << "colonne " << colonne << "dans le else if " << endl;
                         nbCasesLibreAvant++;
                     } else {
+                    	//cout <<  "ligne " << ligne << "colonne " << colonne << "dans else" << endl;
                         nbCasesLibreApres++;
                     }
                 } else {
@@ -222,7 +232,7 @@ public:
                 return alpha;
             }
         }
-        cout << "Retour de max " << alpha << endl;
+        //cout << "Retour de max " << alpha << endl;
         return alpha;
     }
 
@@ -233,6 +243,9 @@ public:
 
     inline virtual const string getJoueurInformations() {
         return JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA";
+    }
+    inline Plateau getPlateau() {
+    	return plateauActuel ;
     }
 };
 #endif // IA_H_INCLUDED
