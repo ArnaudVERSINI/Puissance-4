@@ -12,3 +12,18 @@ include_directories(${CPPTEST_INCLUDE_DIR})
 add_executable (unit_tests  test/unit_test.cpp)
 target_link_libraries(unit_tests ${CPPTEST_LIBRARY})
 ADD_TEST(unit_tests ${EXECUTABLE_OUTPUT_PATH}/unit_tests)
+
+
+Find_Package ( SDL REQUIRED )
+if ( NOT SDL_FOUND )
+   message ( FATAL_ERROR "SDL not found!" )
+endif ( NOT SDL_FOUND )
+
+link_libraries (
+   ${SDL_LIBRARY}
+   SDLmain # Sadly not included in SDL_LIBRARY variable
+)
+
+
+ADD_EXECUTABLE(ihm_puissance4  src/main.cpp)
+target_link_libraries(ihm_puissance4 ${SDL_LIBRARY})
