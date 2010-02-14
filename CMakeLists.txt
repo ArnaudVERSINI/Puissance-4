@@ -25,5 +25,5 @@ link_libraries (
 )
 
 
-ADD_EXECUTABLE(ihm_puissance4  src/main.cpp)
+ADD_EXECUTABLE(ihm_puissance4  src/main.cpp )
 target_link_libraries(ihm_puissance4 ${SDL_LIBRARY})
