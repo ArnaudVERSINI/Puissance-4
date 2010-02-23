@@ -24,6 +24,20 @@ public:
     	plateauActuel.addToColumn(1,BLUE);*/
     }
 
+    static inline int comptabiliserPoints(unsigned int& nbCasesLibreAvant, unsigned int& nbCasesLibreApres, unsigned int& nbCasesJoueur) {
+        unsigned int facteur = 16;
+
+        if (nbCasesLibreAvant > 0 && nbCasesLibreApres > 0) {
+            facteur = 32;
+        }
+        if ((nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur) < 4) {
+            //cout << "Pas assez de cases" << endl;
+            facteur = 0;
+        }
+        unsigned int retValue =  facteur * (nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur);
+        nbCasesLibreAvant = nbCasesLibreApres = nbCasesJoueur = 0;
+        return retValue;
+    }
 
     inline int calculScoreJoueurActuel () {
         unsigned int nbPoints = 0;
@@ -43,23 +57,10 @@ public:
                         nbCasesLibreApres++;
                     }
                 } else {
-                    unsigned int facteur = 16;
-
-                    if (nbCasesLibreAvant > 0 && nbCasesLibreApres > 0) {
-                        facteur = 32;
-                    }
-                    if ((nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur) < 4) {
-                        //cout << "Pas assez de cases" << endl;
-                        facteur = 0;
-                    }
-                    //On favorise les situations multiples
-                    if (scoreIntermediaire > 100) {
-                        facteur *= 4;
-                    }
-                    scoreIntermediaire += facteur * (nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur);
-                    nbCasesLibreAvant = nbCasesLibreApres = nbCasesJoueur = 0;
+                    scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
                 }
             }
+            scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
         }
         //cout << nbPoints << endl;
         nbPoints += scoreIntermediaire;
@@ -91,23 +92,10 @@ public:
                         nbCasesLibreApres++;
                     }
                 } else {
-                    unsigned int facteur = 16;
-
-                    if (nbCasesLibreAvant > 0 && nbCasesLibreApres > 0) {
-                        facteur = 32;
-                    }
-                    if ((nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueurAdverse) < 4) {
-                        //cout << "Pas assez de cases" << endl;
-                        facteur = 0;
-                    }
-                    //On favorise les situations multiples
-                    if (scoreIntermediaire > 100) {
-                        facteur *= 4;
-                    }
-                    scoreIntermediaire += facteur * (nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueurAdverse);
-                    nbCasesLibreAvant = nbCasesLibreApres = nbCasesJoueurAdverse = 0;
+                    scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueurAdverse);
                 }
             }
+            scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueurAdverse);
         }
         //cout << nbPoints << endl;
         nbPoints += scoreIntermediaire;
@@ -152,6 +140,7 @@ public:
                 if (alpha < score_temp) {
                     max_colonne = colonne;
                     alpha = score_temp;
+                    cout << "Modification de alpha " << alpha << endl;
                 }
                 plateauActuel.supprimerCoup(colonne);
             }
@@ -159,7 +148,7 @@ public:
         return max_colonne;
     }
 
-    inline int min(const unsigned int profondeurActuelle, const int alpha, int beta) {
+    int min(const unsigned int profondeurActuelle, const int alpha, int beta) {
         if (profondeurActuelle == 0) {
             int calculScoreResult = calculScore();
             return calculScoreResult;
@@ -198,7 +187,7 @@ public:
     }
 
     //Pas finit
-    inline int max(unsigned int profondeurActuelle, int alpha, const int beta) {
+    int max(unsigned int profondeurActuelle, int alpha, const int beta) {
         if (profondeurActuelle == 0) {
             int calculScoreResult = calculScore();
             return calculScoreResult;
