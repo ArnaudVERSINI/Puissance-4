@@ -19,8 +19,8 @@ private:
 	 */
     void creation() {
     	IAJoueurMinMax <JOUEUR_ROUGE  , 2> ia;
-    	TEST_ASSERT(ia.calculScoreJoueurActuel() == 0)
-    	TEST_ASSERT(ia.calculScoreJoueurAdverse() == 0)
+    	//TEST_ASSERT(ia.calculScoreJoueurActuel() == 0)
+    	//TEST_ASSERT(ia.calculScoreJoueurAdverse() == 0)
     }
 
     /**
@@ -44,8 +44,8 @@ private:
         	TEST_ASSERT(ia.getPlateau().get(1,3) == BLUE)
         	TEST_ASSERT(ia.getPlateau().get(0,1) == BLUE)*/
 
-        	cout << ia.calculScoreJoueurActuel() << endl ;
-        	cout << ia.calculScoreJoueurAdverse() << endl ;
+        //	cout << ia.calculScoreJoueurActuel() << endl ;
+        //	cout << ia.calculScoreJoueurAdverse() << endl ;
 
         	cout << ia.effectuerCoup() << endl ;
         	//ia.getPlateau().addToColumn(3,BLUE);

@@ -13,9 +13,13 @@ class IAJoueurMinMax : public Joueur<joueur_actuel> {
      */
     Plateau plateauActuel;
 
+    unsigned int nbCalculs;
+
 public:
 
     inline IAJoueurMinMax() {
+
+        cout << "Construction d'un IA avec pour profondeur " << profondeur << endl;
 /*    	plateauActuel.addToColumn(2,RED);
     	plateauActuel.addToColumn(6,BLUE);
     	plateauActuel.addToColumn(3,RED);
@@ -30,25 +34,52 @@ public:
         if (nbCasesLibreAvant > 0 && nbCasesLibreApres > 0) {
             facteur = 32;
         }
+
         if ((nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur) < 4) {
             //cout << "Pas assez de cases" << endl;
             facteur = 0;
         }
+
         unsigned int retValue =  facteur * (nbCasesLibreAvant + nbCasesLibreApres + nbCasesJoueur);
         nbCasesLibreAvant = nbCasesLibreApres = nbCasesJoueur = 0;
         return retValue;
     }
+    template <bool ia>
+    inline int calculScoreJoueur () {
+        TCase caseJoueur = (TCase) joueur_actuel;
+        if (!ia) {
+            caseJoueur = (TCase) this->getJoueurAdverse();
+        }
 
-    inline int calculScoreJoueurActuel () {
         unsigned int nbPoints = 0;
         unsigned int scoreIntermediaire = 0;
+
+        for (unsigned int colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
+            bool aCroiserAdversaire = false;
+            unsigned int nbCasesLibre = 0;
+            unsigned int nbCasesAMoi = 0;
+            for (int ligne = Plateau::HAUTEUR - 1; ligne >= 0; ligne--) {
+                TCase caseActuelle = plateauActuel.get(ligne, colonne);
+                if (caseActuelle == NONE) {
+                    nbCasesLibre++;
+                } else if (caseActuelle == caseJoueur) {
+                    if (!aCroiserAdversaire)
+                        nbCasesAMoi++;
+                } else {
+                    aCroiserAdversaire = true;
+                }
+            }
+            if (nbCasesLibre + nbCasesAMoi >= 4) {
+                scoreIntermediaire += nbCasesLibre * 8 + nbCasesAMoi * 16;
+            }
+        }
         for(int ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
             unsigned int nbCasesLibreAvant = 0;
             unsigned int nbCasesJoueur = 0;
             unsigned int nbCasesLibreApres = 0;
             for(int colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
                 TCase caseActuelle = plateauActuel.get(ligne, colonne);
-                if (caseActuelle == (TCase) joueur_actuel) {
+                if (caseActuelle == caseJoueur) {
                     nbCasesJoueur++;
                 } else if (caseActuelle == NONE) {
                     if (nbCasesJoueur == 0) {
@@ -57,56 +88,20 @@ public:
                         nbCasesLibreApres++;
                     }
                 } else {
-                    scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
+                    scoreIntermediaire += comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
                 }
             }
-            scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
+            scoreIntermediaire += comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
         }
-        //cout << nbPoints << endl;
-        nbPoints += scoreIntermediaire;
-        if (nbPoints > 0) {
-            //cout << "NbPoints " << nbPoints << endl;
-        }
-        return nbPoints;
-    }
-
-    inline int calculScoreJoueurAdverse () {
-    	//cout << "Calcul score adverse" << endl;
-        unsigned int nbPoints = 0;
-        unsigned int scoreIntermediaire = 0;
-        for(int ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
-            unsigned int nbCasesLibreAvant = 0;
-            unsigned int nbCasesJoueurAdverse = 0;
-            unsigned int nbCasesLibreApres = 0;
-            for(int colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
-                TCase caseActuelle = plateauActuel.get(ligne, colonne);
-                if (caseActuelle == (TCase) this->getJoueurAdverse()) {
-                	//cout <<  "ligne " << ligne << "colonne " << colonne <<"dans le if " << endl;
-                    nbCasesJoueurAdverse++;
-                } else if (caseActuelle == NONE) {
-                    if (nbCasesJoueurAdverse == 0) {
-                    	//cout <<  "ligne " << ligne << "colonne " << colonne << "dans le else if " << endl;
-                        nbCasesLibreAvant++;
-                    } else {
-                    	//cout <<  "ligne " << ligne << "colonne " << colonne << "dans else" << endl;
-                        nbCasesLibreApres++;
-                    }
-                } else {
-                    scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueurAdverse);
-                }
-            }
-            scoreIntermediaire =+ comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueurAdverse);
-        }
-        //cout << nbPoints << endl;
-        nbPoints += scoreIntermediaire;
-        if (nbPoints > 0) {
-            //cout << "NbPoints " << nbPoints << endl;
-        }
-        return nbPoints;
+        return scoreIntermediaire;
     }
 
     inline int calculScore() {
-        int score = calculScoreJoueurActuel() - calculScoreJoueurAdverse();
+        nbCalculs++;
+
+
+        int score = calculScoreJoueur<true>() - calculScoreJoueur<false>();
+        //out << "Le score est de " << score << endl;
         return score;
     }
 
@@ -124,6 +119,7 @@ public:
 
     inline size_t effectuerCoup() {
 
+        nbCalculs = 0;
         size_t max_colonne = 0;
         const int betaInitial = numeric_limits<int>::max();
         const int alphaInitial = - numeric_limits<int>::max();
@@ -132,19 +128,22 @@ public:
         if (profondeur > 0 && !plateauActuel.isPartieFinit()) {
             for(size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
                 if (plateauActuel.colonneJouable(colonne) == false) {
+                    cout << "La colonne " << colonne << "n'est pas jouable" << endl;
                     continue;
                 }
 
                 plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
                 int score_temp =  min(profondeur, alpha, betaInitial);
+                cout << "On a fait " << nbCalculs << " pour arriver à la colonne " << colonne << endl;
                 if (alpha < score_temp) {
                     max_colonne = colonne;
                     alpha = score_temp;
-                    cout << "Modification de alpha " << alpha << endl;
+                    cout << "Modification de alpha " << alpha << " pour la colonne " << colonne << endl;
                 }
                 plateauActuel.supprimerCoup(colonne);
             }
         }
+        cout << "On a fait " << nbCalculs << " evaluation de la grille" << endl;
         return max_colonne;
     }
 
@@ -231,7 +230,10 @@ public:
     }
 
     inline virtual const string getJoueurInformations() {
-        return JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA";
+        string retValue = "";
+        retValue += JeuxPuissanceQuatre::playerToString(joueur_actuel) + " joueur de type IA profondeur ";
+        retValue += (int) profondeur;
+        return retValue;
     }
     inline Plateau getPlateau() {
     	return plateauActuel ;
