@@ -110,7 +110,7 @@ public:
      * @param colonne Colonne.
      * @return vrai si la colonne est jouable.
      */
-    inline bool colonneJouable(size_t colonne) const{
+    inline bool colonneJouable(const size_t colonne) const {
         bool jouable = false;
         for (size_t line = 0; line < Plateau::HAUTEUR && jouable == false; line ++) {
             if (get(line,colonne) == NONE) {
@@ -121,14 +121,29 @@ public:
     }
 
     /**
+     * Donne le nombre de cases vide dans une colonne.
+     * @return Nombre de cases vide
+     */
+     unsigned int getNbCasesVideColonne(const size_t column) {
+         if (column >= LARGEUR)
+            throw new PlateauException("Coordonnés impossible");
+        unsigned int nbCasesLibre = HAUTEUR;
+        for (size_t ligne = 0; ligne < HAUTEUR && plateau[ligne][column] != NONE; ligne ++) {
+            nbCasesLibre--;
+        }
+        return nbCasesLibre;
+
+     }
+
+    /**
      * Ajoute un pion dans la colonne.
      * @param column La colonne où ajouter le pion.
      * @param case_ Le pion à ajouter
      * @return Le numero de ligne où est le jeton
      * @throw PlateauException
      */
-    inline size_t addToColumn(size_t column, TCase case_) {
-        if (column > LARGEUR)
+    inline size_t addToColumn(const size_t column, const TCase case_) {
+        if (column >= LARGEUR)
             throw PlateauException("Coordonnés impossibles");
         for (size_t line = 0; line < Plateau::HAUTEUR; line ++) {
             if (get(line,column) == NONE) {
