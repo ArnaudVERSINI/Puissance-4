@@ -57,12 +57,6 @@ public :
 
 
     inline IHMConsole(){
-
-/*    	jeux.jouer(2);
-    	print();
-    	sleep(3);
-    	jeux.jouer(3);
-    	print();*/
     }
 
     inline ~IHMConsole() {
