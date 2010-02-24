@@ -132,6 +132,7 @@ class JeuxPuissanceQuatre {
                 switchCurrentPlayer();
             }
         }
+        return ligne ;
     }
 
     /**
