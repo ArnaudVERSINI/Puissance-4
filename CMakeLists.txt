@@ -5,7 +5,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_MODULE_PATH}")
 
 include_directories (${PUISSANCE4_SOURCE_DIR}/include)
 add_executable (consolepuissance_4  src/controler.cpp )
-add_executable (test_ia  src/interface_console.cpp )
+#add_executable (test_ia  src/interface_console.cpp )
 
 enable_testing()
 find_package(CppTest)
