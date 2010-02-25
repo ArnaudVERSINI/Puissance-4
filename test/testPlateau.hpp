@@ -18,6 +18,7 @@ public:
 		TEST_ADD(PlateauTestSuite::isPartieFinitUneCaseVide)
 		TEST_ADD(PlateauTestSuite::supprimerCoupException)
 		TEST_ADD(PlateauTestSuite::supprimerCoup)
+		TEST_ADD(PlateauTestSuite::aGagnerTriangle)
 	}
 
 private:
@@ -164,6 +165,33 @@ private:
 		plateau.addToColumn(3, RED);
 		TEST_ASSERT(plateau.aGagner(3,3,RED) == true)
 	}
+
+	/*
+	 *   X
+	 *  XOX
+	 * XOOXX
+	 */
+
+
+	void aGagnerTriangle() {
+			Plateau plateau;
+			// Ajout d'un pion dans colonne 2
+			plateau.addToColumn(1, RED);
+			plateau.addToColumn(2, BLUE);
+			plateau.addToColumn(3, BLUE);
+			plateau.addToColumn(4, RED);
+			plateau.addToColumn(5, RED);
+
+			plateau.addToColumn(2, RED);
+			plateau.addToColumn(3, BLUE);
+			plateau.addToColumn(4, RED);
+			plateau.addToColumn(3, RED);
+
+
+			// Test attendu a faux
+			TEST_ASSERT(plateau.aGagner(2,4,RED) == false)
+		}
+
 	void isPartieFinitPlateauVide() {
 		Plateau plateau;
 		for (size_t colonne = 0; colonne < Plateau::LARGEUR; colonne++) {
