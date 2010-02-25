@@ -115,13 +115,13 @@ class JeuxPuissanceQuatre {
      * @param colonne Colonne à jouer
      * @return True si le jeux a été possible
      */
-    inline bool jouer(size_t colonne) {
+    inline size_t jouer(size_t colonne) {
         if (partieFinie) {
-            return false;
+            return -1;
         }
 
         if (colonne >= Plateau::LARGEUR) {
-            return false;
+            return -1;
         }
         int ligne = plateau.addToColumn(colonne, (TCase) joueurActuel);
 
@@ -176,6 +176,13 @@ class JeuxPuissanceQuatre {
         return playerToString(gagnant);
     }
 
+    /**
+     * Création d'une chaine de représentation du joueur actuel.
+      * @return TJoueur
+      */
+    inline const TJoueur getJoueurActuelGagnant() const {
+        return gagnant;
+    }
     /**
      * Conversion du jeux en chaine de caractére pour affichage pour debugage.
      * @return Le plateau en string
