@@ -143,7 +143,7 @@ public:
                 plateauActuel.supprimerCoup(colonne);
             }
         }
-        cout << "On a fait " << nbCalculs << " evaluation de la grille" << endl;
+        cout << "On a fait " << nbCalculs << " evaluation de la grille - colonne : " << max_colonne << endl;
         return max_colonne;
     }
 
