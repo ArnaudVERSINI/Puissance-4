@@ -16,7 +16,7 @@ private:
 	TCase plateau[Plateau::HAUTEUR][Plateau::LARGEUR];
 
 	//Surfaces d'un rond, d'une croix et d'un fond
-	SDL_Surface *o, *x, *bg;
+	SDL_Surface *rouge, *jaune, *background , *gagnantJaune , *gagnantRouge;
 
 	//Variable pour un tour
 	TCase tour;
@@ -35,38 +35,50 @@ public:
 				plateau[i][j] = NONE;
 
 		//Valeur par d�faut pour les surfaces
-		o = NULL;
-		x = NULL;
-		bg = NULL;
+		rouge = NULL;
+		jaune = NULL;
+		background = NULL;
+		gagnantJaune = NULL ;
+		gagnantRouge = NULL ;
 	}
 
 	~Jeu() {
 		//On lib�re les surfaces
-		SDL_FreeSurface(o);
-		SDL_FreeSurface(bg);
-		SDL_FreeSurface(x);
+		SDL_FreeSurface(rouge);
+		SDL_FreeSurface(background);
+		SDL_FreeSurface(jaune);
+		SDL_FreeSurface(gagnantJaune);
+		SDL_FreeSurface(gagnantRouge);
 	}
 
 	bool init() {
 		//V�rification de l'allocation des surfaces
-		if (o != NULL) {
-			SDL_FreeSurface(o), o = NULL;
+		if (rouge != NULL) {
+			SDL_FreeSurface(rouge), rouge = NULL;
 		}
-		if (x != NULL) {
-			SDL_FreeSurface(x), x = NULL;
+		if (jaune != NULL) {
+			SDL_FreeSurface(jaune), jaune = NULL;
 		}
-		if (bg != NULL) {
-			SDL_FreeSurface(bg), bg = NULL;
+		if (background != NULL) {
+			SDL_FreeSurface(background), background = NULL;
 		}
-
+		if (gagnantJaune != NULL) {
+			SDL_FreeSurface(gagnantJaune), gagnantJaune = NULL;
+		}
+		if (gagnantRouge != NULL) {
+			SDL_FreeSurface(gagnantRouge), gagnantRouge = NULL;
+		}
 		//On charge toutes les images dans les surfaces associ�es
-		o = SDL_LoadBMP("ressources/rouge.bmp");
-		x = SDL_LoadBMP("ressources/jaune.bmp");
-		bg = SDL_LoadBMP("ressources/fond.bmp");
+		rouge = SDL_LoadBMP("ressources/rouge.bmp");
+		jaune = SDL_LoadBMP("ressources/jaune.bmp");
+		background = SDL_LoadBMP("ressources/fond.bmp");
+		gagnantJaune = SDL_LoadBMP("ressources/gagnantJaune.bmp");
+		gagnantRouge = SDL_LoadBMP("ressources/gagnantRouge.bmp");
 
 		//On teste le retour du chargement
-		if ((o == NULL) || (x == NULL) || (bg == NULL)) {
-			cout << "Probleme de chargement du O, du X ou de l'image de fond"
+		if ((rouge == NULL) || (jaune == NULL) || (background == NULL)
+				|| (gagnantJaune == NULL) || (gagnantRouge == NULL)) {
+			cout << "Probleme de chargement de l'image rouge, jaune ou background"
 					<< endl;
 			return false;
 		}
@@ -75,18 +87,24 @@ public:
 		tour = RED;
 
 		//Mis en place de la transparence
-		if (SDL_SetColorKey(o, SDL_SRCCOLORKEY, 0) == -1)
+		if (SDL_SetColorKey(rouge, SDL_SRCCOLORKEY, 0) == -1)
 			cout << "Erreur avec la transparence du rond" << endl;
 
-		if (SDL_SetColorKey(x, SDL_SRCCOLORKEY, 0) == -1)
+		if (SDL_SetColorKey(jaune, SDL_SRCCOLORKEY, 0) == -1)
 			cout << "Erreur avec la transparence de la croix" << endl;
 
+		if (SDL_SetColorKey(gagnantJaune, SDL_SRCCOLORKEY, 0) == -1)
+			cout << "Erreur avec la transparence du gagnant bleu" << endl;
+
+		if (SDL_SetColorKey(gagnantRouge, SDL_SRCCOLORKEY, 0) == -1)
+			cout << "Erreur avec la transparence du gagnant rouge" << endl;
 		return true;
 	}
 
-	void clic(int x, int y) {
+	void clic(int x, int y ) {
 		size_t i, j;
 		size_t colonne, ligne;
+		bool joue = false;
 
 		//On recupere la largeur et l'hauteur d'une case
 		colonne = WIDTH / Plateau::LARGEUR;
@@ -111,12 +129,15 @@ public:
 		}
 
 		i = Plateau::HAUTEUR - jeux.jouer(j) - 1;
+
 		cout << "Ligne  : " << i << endl;
 		//Si la case est vide, on met à jour son type et la variable tour
 		if (plateau[i][j] == NONE) {
 			plateau[i][j] = tour;
 			tour = (tour == RED) ? BLUE : RED;
+			joue = true;
 		}
+
 
 	}
 
@@ -127,7 +148,7 @@ public:
 		SDL_Rect r = { 0, 0, 0, 0 };
 
 		//Dessiner le fond d'ecran
-		SDL_BlitSurface(bg, NULL, screen, &r);
+		SDL_BlitSurface(background, NULL, screen, &r);
 
 		//On parcourt les cases du tableau, r sera le SDL_Rect qui représentera la position de la case courante
 		for (k = 0, i = 0; i < HEIGHT; i += h, k++) {
@@ -137,12 +158,36 @@ public:
 
 				//On dessine en fonction du type de la case
 				if (plateau[k][l] == BLUE) {
-					SDL_BlitSurface(x, NULL, screen, &r);
+					SDL_BlitSurface(jaune, NULL, screen, &r);
 				} else if (plateau[k][l] == RED) {
-					SDL_BlitSurface(o, NULL, screen, &r);
+					SDL_BlitSurface(rouge, NULL, screen, &r);
 				}
 			}
 		}
+
+		// Test si la partie est finie
+		if (jeux.isEnded()) {
+			SDL_Rect r2 = { 100, 100, 0, 0 };
+					TJoueur joueurGagnant = jeux.getJoueurActuelGagnant();
+					if (joueurGagnant == JOUEUR_BLEU) {
+						// le gagnant est le jaune
+
+						//Dessiner le fond d'ecran
+						SDL_BlitSurface(gagnantRouge, NULL, screen, &r2);
+					}
+					else if (joueurGagnant == JOUEUR_ROUGE) {
+						// le gagnant est le rouge
+
+						//Dessiner le fond d'ecran
+						SDL_BlitSurface(gagnantJaune, NULL, screen, &r2);
+					}
+					else {
+
+					}
+				}
+	}
+
+	void verif() {
 
 	}
 };
