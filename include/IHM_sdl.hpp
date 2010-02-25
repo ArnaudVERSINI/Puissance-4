@@ -7,6 +7,7 @@
 #include "plateau.hpp"
 #include "jeu_puissance_4.hpp"
 #include "joueur.hpp"
+#include "ia.h"
 
 //Classe du jeu
 class Jeu {
@@ -16,17 +17,22 @@ private:
 	TCase plateau[Plateau::HAUTEUR][Plateau::LARGEUR];
 
 	//Surfaces d'un rond, d'une croix et d'un fond
-	SDL_Surface *rouge, *jaune, *background , *gagnantJaune , *gagnantRouge;
+	SDL_Surface *rouge, *jaune, *background, *gagnantJaune, *gagnantRouge;
 
 	//Variable pour un tour
 	TCase tour;
+
+	Joueur<JOUEUR_BLEU>& joueurBleu;
+	Joueur<JOUEUR_ROUGE>& joueurRouge;
 
 	JeuxPuissanceQuatre jeux;
 
 public:
 	static const size_t WIDTH = 392;
 	static const size_t HEIGHT = 336;
-	Jeu() {
+
+	Jeu(Joueur<JOUEUR_BLEU>& joueurBleu_, Joueur<JOUEUR_ROUGE>& joueurRouge_) :
+		joueurBleu(joueurBleu_), joueurRouge(joueurRouge_) {
 		int i, j;
 
 		//On met toutes les cases � Vide
@@ -38,8 +44,8 @@ public:
 		rouge = NULL;
 		jaune = NULL;
 		background = NULL;
-		gagnantJaune = NULL ;
-		gagnantRouge = NULL ;
+		gagnantJaune = NULL;
+		gagnantRouge = NULL;
 	}
 
 	~Jeu() {
@@ -78,7 +84,8 @@ public:
 		//On teste le retour du chargement
 		if ((rouge == NULL) || (jaune == NULL) || (background == NULL)
 				|| (gagnantJaune == NULL) || (gagnantRouge == NULL)) {
-			cout << "Probleme de chargement de l'image rouge, jaune ou background"
+			cout
+					<< "Probleme de chargement de l'image rouge, jaune ou background"
 					<< endl;
 			return false;
 		}
@@ -101,7 +108,7 @@ public:
 		return true;
 	}
 
-	void clic(int x, int y ) {
+	void clic(int x, int y) {
 		size_t i, j;
 		size_t colonne, ligne;
 		bool joue = false;
@@ -114,7 +121,7 @@ public:
 		i = y / ligne;
 		j = x / colonne;
 
-		cout << "Colonne  : " << j << endl;
+		//cout << "Colonne  : " << j << endl;
 
 		//Si la case est vide, on met � jour son type et la variable tour
 
@@ -130,14 +137,18 @@ public:
 
 		i = Plateau::HAUTEUR - jeux.jouer(j) - 1;
 
-		cout << "Ligne  : " << i << endl;
+		if (joueurActuel == JOUEUR_BLEU) {
+			joueurRouge.prendreEnCompteCoupAdversaire(i);
+		} else {
+			joueurBleu.prendreEnCompteCoupAdversaire(i);
+		}
+		//cout << "Ligne  : " << i << endl;
 		//Si la case est vide, on met à jour son type et la variable tour
 		if (plateau[i][j] == NONE) {
 			plateau[i][j] = tour;
 			tour = (tour == RED) ? BLUE : RED;
 			joue = true;
 		}
-
 
 	}
 
@@ -168,27 +179,56 @@ public:
 		// Test si la partie est finie
 		if (jeux.isEnded()) {
 			SDL_Rect r2 = { 100, 100, 0, 0 };
-					TJoueur joueurGagnant = jeux.getJoueurActuelGagnant();
-					if (joueurGagnant == JOUEUR_BLEU) {
-						// le gagnant est le jaune
+			TJoueur joueurGagnant = jeux.getJoueurActuelGagnant();
+			if (joueurGagnant == JOUEUR_BLEU) {
+				// le gagnant est le jaune
 
-						//Dessiner le fond d'ecran
-						SDL_BlitSurface(gagnantRouge, NULL, screen, &r2);
-					}
-					else if (joueurGagnant == JOUEUR_ROUGE) {
-						// le gagnant est le rouge
+				//Dessiner le fond d'ecran
+				SDL_BlitSurface(gagnantRouge, NULL, screen, &r2);
+			} else if (joueurGagnant == JOUEUR_ROUGE) {
+				// le gagnant est le rouge
 
-						//Dessiner le fond d'ecran
-						SDL_BlitSurface(gagnantJaune, NULL, screen, &r2);
-					}
-					else {
+				//Dessiner le fond d'ecran
+				SDL_BlitSurface(gagnantJaune, NULL, screen, &r2);
+			} else {
 
-					}
-				}
+			}
+		}
 	}
 
-	void verif() {
+	void verif(IAJoueurMinMax<JOUEUR_ROUGE, 5> ia) {
+		TJoueur joueurActuel = jeux.getJoueurActuel();
+		if (joueurActuel == JOUEUR_ROUGE && !jeux.isEnded()) {
+			size_t ligne, colonne;
 
+			bool joue = false;
+
+			colonne = ia.effectuerCoup();
+
+			if (colonne >= Plateau::LARGEUR) {
+				return;
+			}
+			if (!jeux.estColonneJouable(colonne)) {
+				return;
+			}
+			ligne = Plateau::HAUTEUR - jeux.jouer(colonne) - 1;
+
+			if (joueurActuel == JOUEUR_BLEU) {
+				joueurRouge.prendreEnCompteCoupAdversaire(colonne);
+			} else {
+				joueurBleu.prendreEnCompteCoupAdversaire(colonne);
+			}
+
+			cout << "Ligne  : " << ligne << endl;
+			cout << "Colonne  : " << colonne << endl;
+			//Si la case est vide, on met à jour son type et la variable tour
+			if (plateau[ligne][colonne] == NONE) {
+				plateau[ligne][colonne] = tour;
+				tour = (tour == RED) ? BLUE : RED;
+				joue = true;
+			}
+
+		}
 	}
 };
 #endif
