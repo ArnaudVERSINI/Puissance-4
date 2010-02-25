@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
 	JoueurHumain<JOUEUR_BLEU> joueur1;//("Arnaud");
 
 
-	if (argc == 3) {
-		const unsigned int profondeur = 10;
+	if (argc > 1) {
+		const unsigned int profondeur = 5;
 
 		IAJoueurMinMax<JOUEUR_ROUGE, profondeur> joueur2;//("Franck");
 		cout << joueur1.getJoueurInformations() << endl;
