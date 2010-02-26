@@ -111,11 +111,13 @@ public:
      * @return vrai si la colonne est jouable.
      */
     inline bool colonneJouable(const size_t colonne) const {
+        if (colonne >= LARGEUR) {
+            cout << "On demande la colonne " << colonne << endl;
+            throw PlateauException("Case inconnu");
+        }
         bool jouable = false;
-        for (size_t line = 0; line < Plateau::HAUTEUR && jouable == false; line ++) {
-            if (get(line,colonne) == NONE) {
-            	jouable = true;
-            }
+        if (plateau[HAUTEUR - 1][colonne] == NONE) {
+            jouable = true;
         }
         return jouable;
     }
