@@ -70,10 +70,12 @@ public:
             cin >> colonne;
             cout << endl;
             if (colonne >= Plateau::LARGEUR) {
-                cout << "Merci de saisir un numero entre 0 et " << Plateau::LARGEUR << endl;
+                cout << "Merci de saisir un numero entre 0 et " << Plateau::LARGEUR - 1 << endl;
+                colonne = Plateau::LARGEUR;
             }
             if (!plateau.colonneJouable(colonne)) {
-                cout << "Merci de saisir une colonne non vide" << endl;
+                cout << "Merci de saisir une colonne nonpleine" << endl;
+                colonne = Plateau::LARGEUR;
             }
         } while (colonne >= Plateau::LARGEUR);
         plateau.addToColumn(colonne, (TCase) joueur);

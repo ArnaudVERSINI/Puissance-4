@@ -120,7 +120,7 @@ public:
     inline size_t effectuerCoup() {
 
         nbCalculs = 0;
-        size_t max_colonne = 0;
+        size_t max_colonne = Plateau::LARGEUR;
         const int betaInitial = numeric_limits<int>::max();
         const int alphaInitial = - numeric_limits<int>::max();
         int alpha = alphaInitial;
@@ -130,6 +130,8 @@ public:
                 if (plateauActuel.colonneJouable(colonne) == false) {
                     cout << "La colonne " << colonne << "n'est pas jouable" << endl;
                     continue;
+                } else {
+                    cout << "La colonne " << colonne << " est jouable" << endl;
                 }
 
                 size_t ligne = plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
@@ -169,7 +171,7 @@ public:
 
             //Pour éviter un appel récursif inutil
             if (plateauActuel.isPartieFinit()) {
-                scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+                scoreTemporaire = calculScore();
             }
             else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
                 scoreTemporaire = - numeric_limits<int>::max();
@@ -208,7 +210,7 @@ public:
 
             //Pour éviter un appel récursif inutil
             if (plateauActuel.isPartieFinit()) {
-                scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+                scoreTemporaire = calculScore();
             } else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) joueur_actuel) ) {
                 scoreTemporaire = numeric_limits<int>::max();
             } else {

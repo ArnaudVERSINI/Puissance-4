@@ -117,11 +117,11 @@ class JeuxPuissanceQuatre {
      */
     inline size_t jouer(size_t colonne) {
         if (partieFinie) {
-            return -1;
+            throw new PlateauException("Jeux terminé");
         }
 
         if (colonne >= Plateau::LARGEUR) {
-            return -1;
+            throw new PlateauException("Colonne incorrecte");
         }
         int ligne = plateau.addToColumn(colonne, (TCase) joueurActuel);
 
