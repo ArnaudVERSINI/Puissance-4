@@ -132,6 +132,7 @@ public:
                     continue;
                 } else {
                     cout << "La colonne " << colonne << " est jouable" << endl;
+                    cout << plateauActuel.toString() << endl;
                 }
 
                 size_t ligne = plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);

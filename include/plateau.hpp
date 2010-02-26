@@ -245,6 +245,44 @@ public:
         }
 
     }
+
+        /**
+     * Conversion du jeux en chaine de caractére pour affichage pour debugage.
+     * @return Le plateau en string
+     */
+    inline const string toString() const {
+        string retValue;
+
+        for(int ligne_actuelle = HAUTEUR - 1; ligne_actuelle >= 0; ligne_actuelle--) {
+            for(size_t i = 0; i < (LARGEUR * 2) + 1; i++) {
+                retValue += "-";
+            }
+            retValue += "\n";
+
+            for(size_t colonne_actuelle = 0; colonne_actuelle <  LARGEUR; colonne_actuelle++) {
+                retValue += "|";
+                retValue += caseToString(get(ligne_actuelle, colonne_actuelle));
+            }
+            retValue += "|\n";
+        }
+        return retValue;
+    }
+    static inline const string caseToString(TCase case_) {
+        const char* chaine = NULL;
+        switch (case_) {
+         case BLUE:
+            chaine = "X";
+            break;
+        case RED:
+            chaine = "0";
+            break;
+        default :
+            chaine = " ";
+            break;
+        }
+        return chaine;
+    }
+
 };
 
 #endif // PLATEAU_HPP_INCLUDED
