@@ -132,8 +132,13 @@ public:
                     continue;
                 }
 
-                plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
-                int score_temp =  min(profondeur, alpha, betaInitial);
+                size_t ligne = plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
+                int score_temp =  0;
+                if (plateauActuel.aGagner(ligne, colonne, (TCase) joueur_actuel)) {
+                    score_temp = numeric_limits<int>::max();
+                } else {
+                    score_temp = min(profondeur, alpha, betaInitial);
+                }
                 cout << "On a fait " << nbCalculs << " pour arriver à la colonne " << colonne << endl;
                 if (alpha < score_temp) {
                     max_colonne = colonne;
@@ -166,7 +171,7 @@ public:
             if (plateauActuel.isPartieFinit()) {
                 scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
             }
-            else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse()) ) {
+            else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
                 scoreTemporaire = - numeric_limits<int>::max();
             } else {
                 scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
