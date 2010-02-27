@@ -93,6 +93,10 @@ public:
             }
             scoreIntermediaire += comptabiliserPoints(nbCasesLibreAvant, nbCasesLibreApres, nbCasesJoueur);
         }
+
+        for( size_t ligne = 0; ligne < Plateau::HAUTEUR; ligne++) {
+
+        }
         return scoreIntermediaire;
     }
 
@@ -132,7 +136,6 @@ public:
                     continue;
                 } else {
                     cout << "La colonne " << colonne << " est jouable" << endl;
-                    cout << plateauActuel.toString() << endl;
                 }
 
                 size_t ligne = plateauActuel.addToColumn(colonne, (TCase) joueur_actuel);
@@ -140,7 +143,7 @@ public:
                 if (plateauActuel.aGagner(ligne, colonne, (TCase) joueur_actuel)) {
                     score_temp = numeric_limits<int>::max();
                 } else {
-                    score_temp = min(profondeur, alpha, betaInitial);
+                    score_temp = this->min(profondeur, alpha, betaInitial);
                 }
                 cout << "On a fait " << nbCalculs << " pour arriver à la colonne " << colonne << endl;
                 if (alpha < score_temp) {
@@ -151,13 +154,15 @@ public:
                 plateauActuel.supprimerCoup(colonne);
             }
         }
+        plateauActuel.addToColumn(max_colonne, (TCase) joueur_actuel);
         cout << "On a fait " << nbCalculs << " evaluation de la grille - colonne : " << max_colonne << endl;
         return max_colonne;
     }
 
+
     int min(const unsigned int profondeurActuelle, const int alpha, int beta) {
         if (profondeurActuelle == 0) {
-            int calculScoreResult = calculScore();
+            int calculScoreResult = this->calculScore();
             return calculScoreResult;
         }
 
@@ -177,7 +182,7 @@ public:
             else if (plateauActuel.aGagner(ligne_actuelle, colonne, (TCase) this->getJoueurAdverse())) {
                 scoreTemporaire = - numeric_limits<int>::max();
             } else {
-                scoreTemporaire = max(profondeurActuelle-1, alpha, beta);
+                scoreTemporaire = this->max(profondeurActuelle-1, alpha, beta);
             }
 
             plateauActuel.supprimerCoup(colonne);
@@ -193,10 +198,10 @@ public:
         return beta;
     }
 
-    //Pas finit
-    int max(unsigned int profondeurActuelle, int alpha, const int beta) {
+
+    int max (unsigned int profondeurActuelle, int alpha, const int beta) {
         if (profondeurActuelle == 0) {
-            int calculScoreResult = calculScore();
+            int calculScoreResult = this->calculScore();
             return calculScoreResult;
         }
 
@@ -247,4 +252,6 @@ public:
     	return plateauActuel ;
     }
 };
+
+
 #endif // IA_H_INCLUDED
