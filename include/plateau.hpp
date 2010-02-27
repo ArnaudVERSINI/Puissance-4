@@ -89,7 +89,9 @@ public:
     inline void set(size_t ligne, size_t colonne, TCase case_) {
         if (ligne < HAUTEUR && colonne < LARGEUR) {
             plateau[ligne][colonne] = case_;
+            return;
         }
+        throw PlateauException("Case inconnu");
     }
 
     /**
@@ -243,6 +245,7 @@ public:
         if (nb_pions >= 3) {
             return true;
         }
+        return false;
 
     }
 
