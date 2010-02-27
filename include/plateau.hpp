@@ -147,7 +147,7 @@ public:
      * @throw PlateauException
      */
     inline size_t addToColumn(const size_t column, const TCase case_) {
-        if (column >= LARGEUR)
+        if (column > LARGEUR)
             throw PlateauException("Coordonnés impossibles");
         for (size_t line = 0; line < Plateau::HAUTEUR; line ++) {
             if (get(line,column) == NONE) {
