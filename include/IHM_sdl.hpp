@@ -121,11 +121,6 @@ public:
 		i = y / ligne;
 		j = x / colonne;
 
-		//cout << "Colonne  : " << j << endl;
-
-		//Si la case est vide, on met � jour son type et la variable tour
-
-
 		TJoueur joueurActuel = jeux.getJoueurActuel();
 
 		if (j >= Plateau::LARGEUR) {
@@ -136,12 +131,8 @@ public:
 		}
 
 		i = Plateau::HAUTEUR - jeux.jouer(j) - 1;
+		joueurBleu.prendreEnCompteCoupAdversaire(i);
 
-		if (joueurActuel == JOUEUR_BLEU) {
-			joueurRouge.prendreEnCompteCoupAdversaire(i);
-		} else {
-			joueurBleu.prendreEnCompteCoupAdversaire(i);
-		}
 		//cout << "Ligne  : " << i << endl;
 		//Si la case est vide, on met à jour son type et la variable tour
 		if (plateau[i][j] == NONE) {
@@ -205,7 +196,7 @@ public:
 
 			colonne = ia.effectuerCoup();
 
-			if (colonne >= Plateau::LARGEUR) {
+			if (colonne > Plateau::LARGEUR) {
 				return;
 			}
 			if (!jeux.estColonneJouable(colonne)) {
@@ -213,11 +204,8 @@ public:
 			}
 			ligne = Plateau::HAUTEUR - jeux.jouer(colonne) - 1;
 
-			if (joueurActuel == JOUEUR_BLEU) {
-				joueurRouge.prendreEnCompteCoupAdversaire(colonne);
-			} else {
-				joueurBleu.prendreEnCompteCoupAdversaire(colonne);
-			}
+
+			joueurRouge.prendreEnCompteCoupAdversaire(colonne);
 
 			cout << "Ligne  : " << ligne << endl;
 			cout << "Colonne  : " << colonne << endl;
