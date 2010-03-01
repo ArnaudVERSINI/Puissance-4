@@ -187,7 +187,7 @@ public:
 		}
 	}
 
-	void verif(IAJoueurMinMax<JOUEUR_ROUGE, 5> ia) {
+	void verif(IAJoueurMinMax<JOUEUR_ROUGE, 9> ia) {
 		TJoueur joueurActuel = jeux.getJoueurActuel();
 		if (joueurActuel == JOUEUR_ROUGE && !jeux.isEnded()) {
 			size_t ligne, colonne;

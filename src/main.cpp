@@ -67,7 +67,7 @@ int jeuDeuxJoueursHumain() {
 int jeuUnJoueurHumain(unsigned int profondeur) {
 
 	JoueurHumain<JOUEUR_BLEU> joueur1;//("Arnaud");
-	IAJoueurMinMax <JOUEUR_ROUGE, 5 > joueur2;//("Franck");
+	IAJoueurMinMax <JOUEUR_ROUGE, 9 > joueur2;//("Franck");
 	Jeu jeu(joueur1, joueur2);
 
 	SDL_Event event;
